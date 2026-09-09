@@ -163,14 +163,28 @@ def _form_prior(morph: str) -> float:
     return 1.0
 
 
+def _lemma_lookup(lemmatiseur: Lemmatiseur, lemma_key: str):
+    """
+    Collatinus's own candidate list sometimes returns a lemma spelled with
+    "j"/"v" (e.g. "jam") when the lexicon actually stores it under "i"/"u"
+    ("iam") or vice versa -- an internal inconsistency, not something we
+    control. A direct dict lookup then raises KeyError even though the
+    lemma genuinely exists, which silently zeroes its frequency and lets a
+    coincidental rival win. Try the classical-spelling variants too.
+    """
+    for key in (lemma_key, lemma_key.replace("j", "i"), lemma_key.replace("v", "u")):
+        try:
+            return lemmatiseur.lemme(key)
+        except KeyError:
+            continue
+    return None
+
+
 def _lemma_nboc(lemmatiseur: Lemmatiseur, lemma_key: str) -> int:
     cache = _lemma_freq_cache()
     if lemma_key in cache:
         return cache[lemma_key]
-    try:
-        obj = lemmatiseur.lemme(lemma_key)
-    except KeyError:
-        obj = None
+    obj = _lemma_lookup(lemmatiseur, lemma_key)
     n = obj._nbOcc if obj is not None else 0
     cache[lemma_key] = n
     return n
@@ -265,7 +279,10 @@ def analyze(word: str):
         ),
     )
 
-    lemma_display = best["lemma"].lower()
+    # "j" never appears in a genuine Latin dictionary headword (it's just
+    # an old typographical variant of consonantal "i"); Collatinus's own
+    # candidate list is inconsistent about this, so normalize it away.
+    lemma_display = best["lemma"].lower().replace("j", "i")
     pos_code = best.get("pos", "")
     pos_label = POS_EN.get(pos_code, pos_code)
     morph_label = _translate_morph(best.get("morph", ""))

@@ -21,6 +21,18 @@ _POS_BUCKET = {
 
 _GENDER_RE = re.compile(r"\b([MFNC])\b")
 
+
+def _norm(s: str) -> str:
+    """
+    Collatinus and Whitaker's Words don't agree on classical vs. modern
+    orthography -- Collatinus's lemma citation forms mix "u" and "v"
+    inconsistently (e.g. "dominus" but "uolo" for volo), while Whitaker's
+    dictionary stems use "v"/"j" consistently. Normalize both sides to u/i
+    before comparing so a lemma like "uideo" still matches Whitaker's
+    "vide" stem.
+    """
+    return s.lower().replace("v", "u").replace("j", "i")
+
 # Whitaker's dictionary stem-matching is unreliable for short, closed-class
 # words (pronouns, conjunctions, common prepositions/adverbs) -- either the
 # minimum stem length excludes them, or the stem collides with an unrelated
@@ -85,6 +97,15 @@ _LEMMA_GLOSS_OVERRIDE = {
     "queo": "to be able",
     "nescio": "to not know",
     "laudo": "to praise",
+    "iam": "now, already, soon",
+    "spes": "hope",
+    "inquam": "I say, said I (used mid-quotation)",
+    "tecum": "with you (sg.)",
+    "mecum": "with me",
+    "homerus": "Homer (the Greek poet)",
+    "imus": "lowest, deepest",
+    "imum": "lowest, deepest",
+    "vepres": "thorn-bush, bramble",
 }
 
 
@@ -102,19 +123,25 @@ def _unique_form_map() -> dict:
 
 @functools.lru_cache(maxsize=1)
 def _stem_index() -> dict:
-    """stem (lowercase) -> list of dict_line entries sharing that stem."""
+    """normalized stem -> list of dict_line entries sharing that stem."""
     idx = {}
     for e in WordsDict:
-        stem = (e.get("orth") or "").lower()
+        stem = _norm(e.get("orth") or "")
         if not stem:
             continue
         idx.setdefault(stem, []).append(e)
     return idx
 
 
-def _pick_entry(entries: list, pos_bucket: str, gender_letter: str):
-    # Prefer entries matching our POS bucket
-    pos_matches = [e for e in entries if e.get("pos") == pos_bucket] or entries
+def _pick_entry(entries: list, pos_bucket: str, gender_letter: str, require_pos: bool = False):
+    # Prefer entries matching our POS bucket. For very short stems (1-2
+    # letters), a random cross-POS collision is likely, so require an
+    # actual POS match rather than falling back to "whatever's there".
+    pos_matches = [e for e in entries if e.get("pos") == pos_bucket]
+    if not pos_matches and not require_pos:
+        pos_matches = entries
+    if not pos_matches:
+        return None
 
     if gender_letter:
         gender_matches = []
@@ -149,13 +176,13 @@ def gloss(word: str, lemma: str, pos_code: str, gender_code: str = "") -> str:
     gender_letter = gender_code[0].upper() if gender_code else ""
 
     stem_index = _stem_index()
-    min_len = 3
-    for length in range(len(lemma_l), min_len - 1, -1):
-        stem = lemma_l[:length]
+    lemma_norm = _norm(lemma_l)
+    for length in range(len(lemma_norm), 0, -1):
+        stem = lemma_norm[:length]
         entries = stem_index.get(stem)
         if not entries:
             continue
-        entry = _pick_entry(entries, pos_bucket, gender_letter)
+        entry = _pick_entry(entries, pos_bucket, gender_letter, require_pos=length <= 2)
         if entry and entry.get("senses"):
             return entry["senses"][0].strip(" ;|")
     return ""
