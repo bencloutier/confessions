@@ -247,10 +247,25 @@ SHARED_WIDGETS = """
 """
 
 SECTION_TEMPLATE = """<section class="chapter" id="{sid}">
-  <span class="secnum">{sid}</span>
+  <span class="secnum">{display}</span>
   <p class="latin">{body}</p>
 </section>
 """
+
+
+def display_label(sid: str) -> str:
+    """
+    The source's citation is Book.Chapter.Paragraph (e.g. "1.5.6" = Book 1,
+    chapter 5, paragraph 6). Most reading editions and translations cite by
+    Book.Paragraph only -- the paragraph number already runs continuously
+    and uniquely through the whole book, so the chapter digit is dropped
+    here to match what a reader following along in a translation expects
+    (e.g. Book 1's 31 paragraphs shown as "1.1" through "1.31").
+    """
+    parts = sid.split(".")
+    if len(parts) == 3:
+        return f"{parts[0]}.{parts[2]}"
+    return sid
 
 
 def build_book(n: int):
@@ -265,7 +280,9 @@ def build_book(n: int):
     for sid, text in paragraphs:
         body = tokenize_to_html(text)
         sid_label = sid or ""
-        sections_html.append(SECTION_TEMPLATE.format(sid=sid_label, body=body))
+        sections_html.append(
+            SECTION_TEMPLATE.format(sid=sid_label, display=display_label(sid_label), body=body)
+        )
 
     prev_link = f'<a href="conf{n-1}.html">&laquo; {ROMAN[n-1]}</a>' if n > 1 else ""
     next_link = f'<a href="conf{n+1}.html">{ROMAN[n+1]} &raquo;</a>' if n < 13 else ""
