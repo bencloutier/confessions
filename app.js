@@ -9,6 +9,7 @@
   var panelNewTab = document.getElementById("panel-newtab");
   var cheatBtn = document.getElementById("cheatsheet-btn");
   var cheatPanel = document.getElementById("cheatsheet-panel");
+  var translationToggle = document.getElementById("translation-toggle");
 
   function closestWord(el) {
     while (el && el !== document.body) {
@@ -108,4 +109,34 @@
     if (panel && !panel.hidden) closePanel();
     if (cheatPanel && !cheatPanel.hidden) cheatPanel.hidden = true;
   });
+
+  // ---- English translation toggle (remembered across books) ----
+
+  function applyTranslationVisibility(visible) {
+    document.body.classList.toggle("hide-translation", !visible);
+    if (translationToggle) {
+      translationToggle.textContent = visible ? "Hide translation" : "Show translation";
+      translationToggle.setAttribute("aria-pressed", String(visible));
+    }
+  }
+
+  if (translationToggle) {
+    var stored = null;
+    try {
+      stored = localStorage.getItem("confessions.showTranslation");
+    } catch (e) {
+      /* private browsing / storage blocked -- default to visible */
+    }
+    applyTranslationVisibility(stored !== "false");
+
+    translationToggle.addEventListener("click", function () {
+      var nowVisible = document.body.classList.contains("hide-translation");
+      applyTranslationVisibility(nowVisible);
+      try {
+        localStorage.setItem("confessions.showTranslation", String(nowVisible));
+      } catch (e) {
+        /* ignore */
+      }
+    });
+  }
 })();

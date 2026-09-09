@@ -9,6 +9,7 @@ declension/conjugation paradigm, and grammatical parse (part of speech,
 gender, declension, case, mood, etc.) for the clicked word form.
 """
 import html
+import json
 import re
 import sys
 from pathlib import Path
@@ -20,6 +21,11 @@ ROOT = Path(__file__).parent
 RAW = ROOT / "raw"
 OUT = ROOT / "books"
 OUT.mkdir(exist_ok=True)
+
+TRANSLATION_PATH = ROOT / "translation.json"
+TRANSLATIONS = (
+    json.loads(TRANSLATION_PATH.read_text(encoding="utf-8")) if TRANSLATION_PATH.exists() else {}
+)
 
 SECTION_RE = re.compile(r"^\d+\.\d+\.\d+$")
 WORD_RE = re.compile(r"[A-Za-zÆæŒœ]+(?:'[A-Za-zÆæŒœ]+)?")
@@ -154,13 +160,16 @@ PAGE_TEMPLATE = """<!doctype html>
 <header class="topbar">
   <a class="home" href="../index.html">&larr; Index</a>
   <h1>AVGVSTINI CONFESSIONVM {title_upper}</h1>
-  <nav class="booknav">{prev_link}{next_link}</nav>
+  <nav class="booknav">
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+    {prev_link}{next_link}
+  </nav>
 </header>
 <main>
 {sections}
 </main>
 <footer>
-  <p>Latin text: The Latin Library / J. J. O'Donnell edition (public domain). Word lookups: <a href="https://logeion.uchicago.edu/" target="_blank" rel="noopener">Logeion</a> (University of Chicago), aggregating Lewis &amp; Short and Perseus morphological data. Click any word to open its full dictionary entry, declension/conjugation, and grammatical parse in the side panel.</p>
+  <p>Latin text: The Latin Library / J. J. O'Donnell edition (public domain). English translation: E. B. Pusey's 1838 translation (public domain), via <a href="https://www.gutenberg.org/ebooks/3296" target="_blank" rel="noopener">Project Gutenberg</a>. Word lookups: <a href="https://logeion.uchicago.edu/" target="_blank" rel="noopener">Logeion</a> (University of Chicago), aggregating Lewis &amp; Short and Perseus morphological data. Click any word to open its full dictionary entry, declension/conjugation, and grammatical parse in the side panel.</p>
 </footer>
 
 {shared_widgets}
@@ -265,6 +274,7 @@ SHARED_WIDGETS = """
 SECTION_TEMPLATE = """<section class="chapter" id="{sid}">
   <span class="secnum">{display}</span>
   <p class="latin">{body}</p>
+  <p class="translation">{translation}</p>
 </section>
 """
 
@@ -292,12 +302,23 @@ def build_book(n: int):
     raw_html = raw_path.read_text(encoding="utf-8", errors="replace")
     paragraphs = extract_paragraphs(raw_html)
 
+    english = TRANSLATIONS.get(str(n), [])
+    if english and len(english) != len(paragraphs):
+        print(
+            f"warning: book {n} has {len(paragraphs)} Latin paragraphs but "
+            f"{len(english)} English ones -- translation alignment will be off",
+            file=sys.stderr,
+        )
+
     sections_html = []
-    for sid, text in paragraphs:
+    for i, (sid, text) in enumerate(paragraphs):
         body = tokenize_to_html(text)
         sid_label = sid or ""
+        translation = html.escape(english[i]) if i < len(english) else ""
         sections_html.append(
-            SECTION_TEMPLATE.format(sid=sid_label, display=display_label(sid_label), body=body)
+            SECTION_TEMPLATE.format(
+                sid=sid_label, display=display_label(sid_label), body=body, translation=translation
+            )
         )
 
     prev_link = f'<a href="conf{n-1}.html">&laquo; {ROMAN[n-1]}</a>' if n > 1 else ""
