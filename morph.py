@@ -252,6 +252,45 @@ def _tiebreak_key(morph: str, pos: str) -> tuple:
     return (number_rank, case_rank)
 
 
+# People and places from Augustine's own life -- classical Latin lexicons
+# (Collatinus included) have no entry for them at all, so Collatinus
+# returns zero candidates. A small hand-built fallback for the ones that
+# recur through the narrative, so at least these aren't left completely
+# unlabeled. Case guessed from the ending; these are proper nouns, so it's
+# a minor detail next to just identifying who/where it is.
+_PROPER_NOUN_FALLBACK = {
+    "alypius": ("alypius", "nom. sg."),
+    "alypio": ("alypius", "dat./abl. sg."),
+    "alypium": ("alypius", "acc. sg."),
+    "monnica": ("monnica", "nom. sg."),
+    "monnicae": ("monnica", "gen./dat. sg."),
+    "ponticianus": ("ponticianus", "nom. sg."),
+    "romanianus": ("romanianus", "nom. sg."),
+    "simplicianus": ("simplicianus", "nom. sg."),
+    "simpliciano": ("simplicianus", "dat./abl. sg."),
+    "simplicianum": ("simplicianus", "acc. sg."),
+    "vindicianus": ("vindicianus", "nom. sg."),
+    "vindiciano": ("vindicianus", "dat./abl. sg."),
+    "elpidius": ("elpidius", "nom. sg."),
+    "elpidii": ("elpidius", "gen. sg."),
+    "hierius": ("hierius", "nom. sg."),
+    "hierium": ("hierius", "acc. sg."),
+    "cassiciacum": ("cassiciacum", "nom./acc. sg."),
+    "cassiciaco": ("cassiciacum", "abl. sg."),
+    "hierusalem": ("hierusalem", "indecl."),
+    "hippocraten": ("hippocrates", "acc. sg. (Greek)"),
+    "helias": ("helias", "nom. sg."),
+    "heliam": ("helias", "acc. sg."),
+    "thagastensis": ("thagastensis", "nom./gen. sg."),
+    "thagastensi": ("thagastensis", "abl. sg."),
+    "daviticum": ("daviticus", "acc. sg."),
+    "genesis": ("genesis", "nom. sg. (Greek)"),
+    "geneseos": ("genesis", "gen. sg. (Greek)"),
+    "martyum": ("martyr", "gen. pl. (syncopated for martyrum)"),
+}
+_COMMON_NOUN_FALLBACK = {"martyum"}
+
+
 @functools.lru_cache(maxsize=None)
 def analyze(word: str):
     """
@@ -261,6 +300,18 @@ def analyze(word: str):
     l = _load_lemmatiseur()
     candidates = list(l.lemmatise(word.lower(), pos=True))
     if not candidates:
+        fallback = _PROPER_NOUN_FALLBACK.get(word.lower())
+        if fallback:
+            lemma, case_tag = fallback
+            kind = "noun" if word.lower() in _COMMON_NOUN_FALLBACK else "proper noun"
+            return {
+                "lemma": lemma,
+                "pos": "noun",
+                "pos_code": "n",
+                "gender_code": "",
+                "tag": f"{kind}, {case_tag}",
+                "ambiguous": False,
+            }
         return None
 
     # Prefer candidates that match the queried form exactly over ones

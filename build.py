@@ -50,18 +50,34 @@ def extract_paragraphs(raw_html: str):
         if cls in ("pagehead", "border"):
             continue
         text = html.unescape(body)
-        text = re.sub(r"<[^>]+>", "", text)  # strip stray tags
+        text = re.sub(r"<br\s*/?>", " ", text, flags=re.I)  # line breaks (e.g. inside quoted verse) -> space
+        text = re.sub(r"<[^>]+>", "", text)  # strip remaining stray tags
         text = re.sub(r"&#\d+;", "", text)   # drop obfuscated mailto entities etc.
-        text = text.strip()
+        text = re.sub(r"\s+", " ", text).strip()
         if not text:
             continue
         # A block that starts with a section marker (optionally followed by
         # an editorial "commentary on ..." note, which we discard) sets the
         # pending section id for the next real paragraph of Latin text.
         # Latin prose paragraphs never start with a digit, so this is safe.
-        marker_match = re.match(r"^(\d+\.\d+\.\d+)", text)
+        marker_match = re.match(r"^(\d+\.\d+\.\d+)\s*(.*)$", text, re.S)
         if marker_match:
             pending_section = marker_match.group(1)
+            text = marker_match.group(2).strip()
+            if not text or re.match(r"^commentary\b", text, re.I):
+                # Either just the bare marker, or an editorial English
+                # "commentary on X.Y.Z" note -- not Latin text either way.
+                continue
+            # This block had the marker AND the paragraph text run together
+            # in the same <p> (usually they're in separate <p> tags) --
+            # fall through and use the remainder as this section's text.
+        if pending_section is None and paragraphs:
+            # This <p> block is a continuation of the previous section (the
+            # source sometimes splits one section across multiple <p> tags,
+            # e.g. around embedded quoted verse) -- merge rather than start
+            # a bogus unlabeled section.
+            prev_sid, prev_text = paragraphs[-1]
+            paragraphs[-1] = (prev_sid, f"{prev_text} {text}")
             continue
         paragraphs.append((pending_section, text))
         pending_section = None
