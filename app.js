@@ -235,4 +235,55 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
+
+  // ---- Chapter navigation: swipe, and left/right arrow keys ----
+  // (edge-nav.prev/.next themselves are plain tappable/clickable links --
+  // this just adds the swipe gesture and keyboard shortcut on top.)
+
+  var edgePrev = document.querySelector(".edge-nav.prev");
+  var edgeNext = document.querySelector(".edge-nav.next");
+
+  if (edgePrev || edgeNext) {
+    document.addEventListener("keydown", function (e) {
+      if (!panel.hidden || !cheatPanel.hidden) return;
+      var tag = (e.target.tagName || "").toLowerCase();
+      if (tag === "select" || tag === "input" || tag === "textarea") return;
+      if (e.key === "ArrowRight" && edgeNext) window.location.href = edgeNext.getAttribute("href");
+      if (e.key === "ArrowLeft" && edgePrev) window.location.href = edgePrev.getAttribute("href");
+    });
+
+    var touchStartX = null;
+    var touchStartY = null;
+
+    document.addEventListener(
+      "touchstart",
+      function (e) {
+        if (e.touches.length !== 1) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    document.addEventListener(
+      "touchend",
+      function (e) {
+        if (touchStartX === null) return;
+        var touch = e.changedTouches[0];
+        var dx = touch.clientX - touchStartX;
+        var dy = touch.clientY - touchStartY;
+        touchStartX = null;
+        touchStartY = null;
+
+        // Require a mostly-horizontal swipe of real distance, so normal
+        // vertical scrolling and word taps never trigger a page change.
+        if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        if (!panel.hidden || !cheatPanel.hidden) return;
+
+        if (dx < 0 && edgeNext) window.location.href = edgeNext.getAttribute("href");
+        else if (dx > 0 && edgePrev) window.location.href = edgePrev.getAttribute("href");
+      },
+      { passive: true }
+    );
+  }
 })();

@@ -8,6 +8,7 @@ live Latin dictionary/morphology tool that shows the lemma (root), full
 declension/conjugation paradigm, and grammatical parse (part of speech,
 gender, declension, case, mood, etc.) for the clicked word form.
 """
+import functools
 import html
 import json
 import re
@@ -174,13 +175,15 @@ CHAPTER_PAGE_TEMPLATE = """<!doctype html>
 <header class="topbar">
   <a class="home" href="../../index.html">&larr; Index</a>
   <a class="home" href="../conf{n}.html">Liber {roman}</a>
-  <span class="topbar-book">{prev_link}<strong>Caput {chapter}</strong>{next_link}</span>
+  <span class="topbar-book"><strong>Caput {chapter}</strong></span>
   <select id="section-jump" class="section-jump" aria-label="Jump to chapter">
     <option value="">Jump to chapter &hellip;</option>
     {chapter_options}
   </select>
   <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
 </header>
+{prev_link}
+{next_link}
 <main>
 <h1 class="book-title">AVGVSTINI CONFESSIONVM {title_upper}<span class="book-title-sub">Caput {chapter}</span></h1>
 {sections}
@@ -353,6 +356,21 @@ def group_by_chapter(paragraphs):
     return chapters
 
 
+@functools.lru_cache(maxsize=None)
+def chapter_count(n: int) -> int:
+    """Number of chapters in book n, for cross-book edge navigation at the
+    first/last chapter of a book. Reads that book's raw file regardless of
+    which books are being built this run, so e.g. `python3 build.py 5`
+    still links correctly back into book 4's last chapter."""
+    if n < 1 or n > 13:
+        return 0
+    raw_path = RAW / f"conf{n}.html"
+    if not raw_path.exists():
+        return 0
+    paras = extract_paragraphs(raw_path.read_text(encoding="utf-8", errors="replace"))
+    return group_by_chapter(paras)[-1][0]
+
+
 def book_nav_links(n: int) -> tuple:
     prev_link = (
         f'<a href="conf{n-1}.html" title="Liber {ROMAN[n-1]}">&laquo;</a>'
@@ -436,6 +454,31 @@ def build_book(n: int):
     print(f"wrote {toc_path} ({len(chapters)} chapters, {len(paragraphs)} sections)")
 
 
+def edge_nav_html(direction: str, n: int, chapter_in_book) -> str:
+    """
+    A full-height tap/swipe zone along the left or right edge of the page,
+    Kindle-style, for moving between chapters. Falls through to the
+    adjacent book's last/first chapter at a book boundary; renders nothing
+    at the very start or end of the whole work.
+    """
+    arrow = "&#8249;" if direction == "prev" else "&#8250;"
+    if chapter_in_book is not None:
+        href = f"{chapter_in_book}.html"
+        label = f"Caput {chapter_in_book}"
+    elif direction == "prev" and n > 1 and chapter_count(n - 1):
+        href = f"../conf{n - 1}/{chapter_count(n - 1)}.html"
+        label = f"Liber {ROMAN[n - 1]}"
+    elif direction == "next" and n < 13 and chapter_count(n + 1):
+        href = f"../conf{n + 1}/1.html"
+        label = f"Liber {ROMAN[n + 1]}"
+    else:
+        return ""
+    return (
+        f'<a class="edge-nav {direction}" href="{href}" aria-label="{"Previous" if direction == "prev" else "Next"} chapter: {label}" title="{label}">'
+        f"<span aria-hidden=\"true\">{arrow}</span></a>"
+    )
+
+
 def build_chapter(n, chapter, paras, english, prev_chapter, next_chapter, chapter_options):
     sections_html = []
     for i, (sid, text) in enumerate(paras):
@@ -446,16 +489,8 @@ def build_chapter(n, chapter, paras, english, prev_chapter, next_chapter, chapte
             SECTION_TEMPLATE.format(sid=sid, display=display, body=body, translation=translation)
         )
 
-    prev_link = (
-        f'<a href="{prev_chapter}.html" title="Caput {prev_chapter}">&laquo;</a>'
-        if prev_chapter is not None
-        else '<span class="disabled-arrow">&laquo;</span>'
-    )
-    next_link = (
-        f'<a href="{next_chapter}.html" title="Caput {next_chapter}">&raquo;</a>'
-        if next_chapter is not None
-        else '<span class="disabled-arrow">&raquo;</span>'
-    )
+    prev_link = edge_nav_html("prev", n, prev_chapter)
+    next_link = edge_nav_html("next", n, next_chapter)
 
     page = CHAPTER_PAGE_TEMPLATE.format(
         roman=ROMAN[n],
