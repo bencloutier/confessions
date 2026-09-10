@@ -18,6 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 SRC_DIR = ROOT / "raw_en" / "outler"
 OUT = ROOT / "translation.json"
+SUMMARY_OUT = ROOT / "book_summaries.json"
 
 ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII"]
 
@@ -70,16 +71,34 @@ def extract_book(n: int) -> list:
     return [text for _, text in paras]
 
 
+FIRST_CHAPTER_RE = re.compile(r"(?m)^== Chapter .+ ==\s*$")
+
+
+def extract_summary(n: int) -> str:
+    """The short italicized description Outler put at the head of each book."""
+    roman = ROMAN[n]
+    raw = (SRC_DIR / f"book_{roman}.wikitext").read_text(encoding="utf-8")
+    m = FIRST_CHAPTER_RE.search(raw)
+    intro = raw[: m.start()] if m else raw
+    intro = re.sub(r"\{\{header.*?\}\}", "", intro, flags=re.S)
+    intro = re.sub(r"\[\[Image:[^\]]*\]\]", "", intro)
+    return clean_text(intro)
+
+
 def main():
     books = {}
+    summaries = {}
     for n in range(1, 14):
         paras = extract_book(n)
         expected = EXPECTED_COUNTS[n - 1]
         flag = "OK" if len(paras) == expected else f"MISMATCH (got {len(paras)}, want {expected})"
         print(f"book {n:2}: {len(paras):3} paragraphs  {flag}")
         books[str(n)] = paras
+        summaries[str(n)] = extract_summary(n)
     OUT.write_text(json.dumps(books, ensure_ascii=False, indent=1), encoding="utf-8")
+    SUMMARY_OUT.write_text(json.dumps(summaries, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"wrote {OUT}")
+    print(f"wrote {SUMMARY_OUT}")
 
 
 if __name__ == "__main__":

@@ -211,18 +211,13 @@
     });
   }
 
-  // ---- Jump to section ----
+  // ---- Jump to chapter (navigates to that chapter's page) ----
 
   if (sectionJump) {
     sectionJump.addEventListener("change", function () {
-      var sid = sectionJump.value;
-      if (!sid) return;
-      var target = document.getElementById(sid);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-        history.replaceState(null, "", "#" + sid);
-      }
-      sectionJump.value = "";
+      var target = sectionJump.value;
+      if (!target) return;
+      window.location.href = target;
     });
   }
 

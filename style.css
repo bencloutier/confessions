@@ -282,6 +282,46 @@ footer a { color: var(--muted); }
   line-height: 1.7;
 }
 
+.chapterlist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chapterlist li a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.65rem 0.9rem;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.chapterlist strong {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.chapter-preview {
+  color: var(--muted);
+  font-family: var(--font-serif);
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.book-title-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin-top: 0.3rem;
+}
+
 /* ---- hover tooltip ---- */
 
 .word-tooltip {

@@ -27,7 +27,9 @@ TRANSLATIONS = (
     json.loads(TRANSLATION_PATH.read_text(encoding="utf-8")) if TRANSLATION_PATH.exists() else {}
 )
 
-SECTION_RE = re.compile(r"^\d+\.\d+\.\d+$")
+SUMMARY_PATH = ROOT / "book_summaries.json"
+SUMMARIES = json.loads(SUMMARY_PATH.read_text(encoding="utf-8")) if SUMMARY_PATH.exists() else {}
+
 WORD_RE = re.compile(r"[A-Za-zÆæŒœ]+(?:'[A-Za-zÆæŒœ]+)?")
 CHUNK_RE = re.compile(r"\S+")
 
@@ -149,35 +151,72 @@ def tokenize_to_html(paragraph_text: str) -> str:
     return "".join(out)
 
 
-PAGE_TEMPLATE = """<!doctype html>
+ATTRIBUTION = (
+    "Latin text: The Latin Library / J. J. O'Donnell edition (public domain). "
+    "English translation: Albert C. Outler's 1955 translation (released to the public "
+    'domain by the translator), via <a href="https://en.wikisource.org/wiki/'
+    'The_Confessions_of_Saint_Augustine_(Outler)" target="_blank" rel="noopener">Wikisource</a>. '
+    'Word lookups: <a href="https://logeion.uchicago.edu/" target="_blank" rel="noopener">Logeion</a> '
+    "(University of Chicago), aggregating Lewis &amp; Short and Perseus morphological data. "
+    "Click any word to open its full dictionary entry, declension/conjugation, and grammatical "
+    "parse in the side panel."
+)
+
+CHAPTER_PAGE_TEMPLATE = """<!doctype html>
 <html lang="la">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Confessiones {roman} — Confessions Word Guide</title>
+<title>Confessiones {roman}.{chapter} — Confessions Word Guide</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="../../index.html">&larr; Index</a>
+  <a class="home" href="../conf{n}.html">Liber {roman}</a>
+  <span class="topbar-book">{prev_link}<strong>Caput {chapter}</strong>{next_link}</span>
+  <select id="section-jump" class="section-jump" aria-label="Jump to chapter">
+    <option value="">Jump to chapter &hellip;</option>
+    {chapter_options}
+  </select>
+  <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+</header>
+<main>
+<h1 class="book-title">AVGVSTINI CONFESSIONVM {title_upper}<span class="book-title-sub">Caput {chapter}</span></h1>
+{sections}
+</main>
+<footer>
+  <p>{attribution}</p>
+</footer>
+
+{shared_widgets}
+
+<script src="../../app.js"></script>
+</body>
+</html>
+"""
+
+TOC_PAGE_TEMPLATE = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liber {roman} — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
   <a class="home" href="../index.html">&larr; Index</a>
   <span class="topbar-book">{prev_link}<strong>{roman}</strong>{next_link}</span>
-  <select id="section-jump" class="section-jump" aria-label="Jump to section">
-    <option value="">Jump to &hellip;</option>
-    {section_options}
-  </select>
-  <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
 </header>
-<main>
-<h1 class="book-title">AVGVSTINI CONFESSIONVM {title_upper}</h1>
-{sections}
+<main class="index-main">
+<h1>AVGVSTINI CONFESSIONVM {title_upper}</h1>
+<p class="index-sub">{summary}</p>
+<ul class="booklist chapterlist">
+{chapter_cards}
+</ul>
+<p class="about">{attribution}</p>
 </main>
-<footer>
-  <p>Latin text: The Latin Library / J. J. O'Donnell edition (public domain). English translation: Albert C. Outler's 1955 translation (released to the public domain by the translator), via <a href="https://en.wikisource.org/wiki/The_Confessions_of_Saint_Augustine_(Outler)" target="_blank" rel="noopener">Wikisource</a>. Word lookups: <a href="https://logeion.uchicago.edu/" target="_blank" rel="noopener">Logeion</a> (University of Chicago), aggregating Lewis &amp; Short and Perseus morphological data. Click any word to open its full dictionary entry, declension/conjugation, and grammatical parse in the side panel.</p>
-</footer>
-
-{shared_widgets}
-
-<script src="../app.js"></script>
 </body>
 </html>
 """
@@ -298,6 +337,36 @@ def display_label(sid: str) -> str:
     return sid
 
 
+def chapter_num(sid: str) -> int:
+    return int(sid.split(".")[1])
+
+
+def group_by_chapter(paragraphs):
+    """[(sid, text), ...] -> [(chapter_num, [(sid, text), ...]), ...], in order."""
+    chapters = []
+    for sid, text in paragraphs:
+        c = chapter_num(sid)
+        if chapters and chapters[-1][0] == c:
+            chapters[-1][1].append((sid, text))
+        else:
+            chapters.append((c, [(sid, text)]))
+    return chapters
+
+
+def book_nav_links(n: int) -> tuple:
+    prev_link = (
+        f'<a href="conf{n-1}.html" title="Liber {ROMAN[n-1]}">&laquo;</a>'
+        if n > 1
+        else '<span class="disabled-arrow">&laquo;</span>'
+    )
+    next_link = (
+        f'<a href="conf{n+1}.html" title="Liber {ROMAN[n+1]}">&raquo;</a>'
+        if n < 13
+        else '<span class="disabled-arrow">&raquo;</span>'
+    )
+    return prev_link, next_link
+
+
 def build_book(n: int):
     raw_path = RAW / f"conf{n}.html"
     if not raw_path.exists():
@@ -314,39 +383,94 @@ def build_book(n: int):
             file=sys.stderr,
         )
 
-    sections_html = []
-    section_options = []
-    for i, (sid, text) in enumerate(paragraphs):
-        body = tokenize_to_html(text)
-        sid_label = sid or ""
-        display = display_label(sid_label)
-        translation = html.escape(english[i]) if i < len(english) else ""
-        sections_html.append(
-            SECTION_TEMPLATE.format(sid=sid_label, display=display, body=body, translation=translation)
+    chapters = group_by_chapter(paragraphs)
+    book_dir = OUT / f"conf{n}"
+    book_dir.mkdir(exist_ok=True)
+
+    # Global paragraph index -> English text, so each chapter page can slice
+    # out the English paragraphs that belong to it.
+    para_index = 0
+    chapter_english = []
+    for _, paras in chapters:
+        chapter_english.append(english[para_index : para_index + len(paras)])
+        para_index += len(paras)
+
+    chapter_options = "\n    ".join(
+        f'<option value="{c}.html">Caput {c} — {" ".join(paras[0][1].split()[:4])}…</option>'
+        for c, paras in chapters
+    )
+
+    chapter_cards = []
+    for (c, paras), eng in zip(chapters, chapter_english):
+        preview = eng[0] if eng else paras[0][1]
+        preview = " ".join(preview.split()[:16]) + "…"
+        chapter_cards.append(
+            f'<li><a href="conf{n}/{c}.html"><strong>Caput {c}</strong>'
+            f'<span class="chapter-preview">{html.escape(preview)}</span></a></li>'
         )
-        preview = " ".join(text.split()[:5])
-        option_label = html.escape(f"{display} — {preview}…")
-        section_options.append(f'<option value="{sid_label}">{option_label}</option>')
 
-    prev_link = (
-        f'<a href="conf{n-1}.html" title="Liber {ROMAN[n-1]}">&laquo;</a>' if n > 1 else '<span class="disabled-arrow">&laquo;</span>'
-    )
-    next_link = (
-        f'<a href="conf{n+1}.html" title="Liber {ROMAN[n+1]}">&raquo;</a>' if n < 13 else '<span class="disabled-arrow">&raquo;</span>'
-    )
+    prev_book, next_book = book_nav_links(n)
 
-    page = PAGE_TEMPLATE.format(
+    for idx, (c, paras) in enumerate(chapters):
+        build_chapter(
+            n=n,
+            chapter=c,
+            paras=paras,
+            english=chapter_english[idx],
+            prev_chapter=chapters[idx - 1][0] if idx > 0 else None,
+            next_chapter=chapters[idx + 1][0] if idx < len(chapters) - 1 else None,
+            chapter_options=chapter_options,
+        )
+
+    toc_page = TOC_PAGE_TEMPLATE.format(
         roman=ROMAN[n],
         title_upper=BOOK_TITLES[n].upper(),
+        summary=html.escape(SUMMARIES.get(str(n), "")),
+        chapter_cards="\n".join(chapter_cards),
+        prev_link=prev_book,
+        next_link=next_book,
+        attribution=ATTRIBUTION,
+    )
+    toc_path = OUT / f"conf{n}.html"
+    toc_path.write_text(toc_page, encoding="utf-8")
+    print(f"wrote {toc_path} ({len(chapters)} chapters, {len(paragraphs)} sections)")
+
+
+def build_chapter(n, chapter, paras, english, prev_chapter, next_chapter, chapter_options):
+    sections_html = []
+    for i, (sid, text) in enumerate(paras):
+        body = tokenize_to_html(text)
+        display = display_label(sid)
+        translation = html.escape(english[i]) if i < len(english) else ""
+        sections_html.append(
+            SECTION_TEMPLATE.format(sid=sid, display=display, body=body, translation=translation)
+        )
+
+    prev_link = (
+        f'<a href="{prev_chapter}.html" title="Caput {prev_chapter}">&laquo;</a>'
+        if prev_chapter is not None
+        else '<span class="disabled-arrow">&laquo;</span>'
+    )
+    next_link = (
+        f'<a href="{next_chapter}.html" title="Caput {next_chapter}">&raquo;</a>'
+        if next_chapter is not None
+        else '<span class="disabled-arrow">&raquo;</span>'
+    )
+
+    page = CHAPTER_PAGE_TEMPLATE.format(
+        roman=ROMAN[n],
+        n=n,
+        chapter=chapter,
+        title_upper=BOOK_TITLES[n].upper(),
         sections="\n".join(sections_html),
-        section_options="\n    ".join(section_options),
+        chapter_options=chapter_options,
         prev_link=prev_link,
         next_link=next_link,
         shared_widgets=SHARED_WIDGETS,
+        attribution=ATTRIBUTION,
     )
-    out_path = OUT / f"conf{n}.html"
+    out_path = OUT / f"conf{n}" / f"{chapter}.html"
     out_path.write_text(page, encoding="utf-8")
-    print(f"wrote {out_path} ({len(paragraphs)} sections)")
 
 
 if __name__ == "__main__":
