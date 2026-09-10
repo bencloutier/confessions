@@ -12,6 +12,10 @@
   var translationToggle = document.getElementById("translation-toggle");
   var sectionJump = document.getElementById("section-jump");
   var backToTop = document.getElementById("back-to-top");
+  var translationBar = document.getElementById("translation-bar");
+  var translationBarToggle = document.getElementById("translation-bar-toggle");
+  var translationBarNum = document.getElementById("translation-bar-num");
+  var translationBarText = document.getElementById("translation-bar-text");
 
   // Devices with a real hovering pointer (mouse/trackpad) get the preview
   // tooltip on hover and a single click opens the dictionary panel
@@ -181,6 +185,80 @@
     if (!hasHover) hideTooltip();
   });
 
+  // ---- Sticky "now reading" translation bar ----
+  // Tracks scroll position and always shows the current section's English
+  // translation in a bar pinned to the bottom of the screen, so reading
+  // Latin never requires scrolling down (and back up) to check English.
+
+  function syncBarHeight() {
+    if (!translationBar) return;
+    var hidden = document.body.classList.contains("hide-translation");
+    document.documentElement.style.setProperty("--tbar-h", hidden ? "0px" : translationBar.offsetHeight + "px");
+  }
+
+  if (translationBar && translationBarText) {
+    var chapters = Array.prototype.slice.call(document.querySelectorAll(".chapter"));
+    var activeSection = null;
+
+    var updateActiveSection = function () {
+      if (!chapters.length) return;
+      var topbarEl = document.querySelector(".topbar");
+      var refY = (topbarEl ? topbarEl.getBoundingClientRect().bottom : 0) + 6;
+      var current = chapters[0];
+      for (var i = 0; i < chapters.length; i++) {
+        if (chapters[i].getBoundingClientRect().top <= refY) current = chapters[i];
+        else break;
+      }
+      if (current === activeSection) return;
+      if (activeSection) activeSection.classList.remove("active-section");
+      current.classList.add("active-section");
+      activeSection = current;
+      if (translationBarNum) translationBarNum.textContent = current.dataset.display || "";
+      translationBarText.textContent = current.dataset.translation || "";
+    };
+
+    var scrollTicking = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        window.requestAnimationFrame(function () {
+          updateActiveSection();
+          scrollTicking = false;
+        });
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", syncBarHeight);
+    updateActiveSection();
+  }
+
+  if (translationBarToggle) {
+    var applyBarCollapsed = function (collapsed) {
+      document.body.classList.toggle("translation-collapsed", collapsed);
+      translationBarToggle.setAttribute("aria-expanded", String(!collapsed));
+      syncBarHeight();
+    };
+    var storedCollapsed = null;
+    try {
+      storedCollapsed = localStorage.getItem("confessions.translationCollapsed");
+    } catch (e) {
+      /* ignore */
+    }
+    applyBarCollapsed(storedCollapsed === "true");
+
+    translationBarToggle.addEventListener("click", function () {
+      var collapsed = !document.body.classList.contains("translation-collapsed");
+      applyBarCollapsed(collapsed);
+      try {
+        localStorage.setItem("confessions.translationCollapsed", String(collapsed));
+      } catch (e) {
+        /* ignore */
+      }
+    });
+  }
+
   // ---- English translation toggle (remembered across books) ----
 
   function applyTranslationVisibility(visible) {
@@ -189,6 +267,7 @@
       translationToggle.textContent = visible ? "Hide translation" : "Show translation";
       translationToggle.setAttribute("aria-pressed", String(visible));
     }
+    syncBarHeight();
   }
 
   if (translationToggle) {

@@ -227,6 +227,14 @@ TOC_PAGE_TEMPLATE = """<!doctype html>
 SHARED_WIDGETS = """
 <div id="word-tooltip" class="word-tooltip" hidden></div>
 
+<aside id="translation-bar" class="translation-bar">
+  <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true" aria-label="Collapse translation">
+    <span class="translation-bar-num" id="translation-bar-num">&mdash;</span>
+    <span class="translation-bar-chevron" aria-hidden="true">&#9662;</span>
+  </button>
+  <p id="translation-bar-text" class="translation-bar-text"></p>
+</aside>
+
 <div id="panel-overlay" class="panel-overlay" hidden></div>
 <aside id="word-panel" class="word-panel" hidden>
   <div class="panel-header">
@@ -317,10 +325,9 @@ SHARED_WIDGETS = """
 </aside>
 """
 
-SECTION_TEMPLATE = """<section class="chapter" id="{sid}">
+SECTION_TEMPLATE = """<section class="chapter" id="{sid}" data-display="{display}" data-translation="{translation}">
   <span class="secnum">{display}</span>
   <p class="latin">{body}</p>
-  <p class="translation">{translation}</p>
 </section>
 """
 
