@@ -226,6 +226,8 @@ TOC_PAGE_TEMPLATE = """<!doctype html>
 SHARED_WIDGETS = """
 <div id="word-tooltip" class="word-tooltip" hidden></div>
 
+<div id="nav-hint" class="nav-hint" hidden>Swipe, or press &larr; &rarr;, to change chapters</div>
+
 <aside id="translation-bar" class="translation-bar">
   <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true">
     <span class="translation-bar-num" id="translation-bar-num">&mdash;</span>

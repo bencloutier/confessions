@@ -108,7 +108,7 @@ main {
 }
 
 .chapter {
-  margin-bottom: 2.2rem;
+  margin-bottom: 3.6rem;
   position: relative;
 }
 
@@ -531,46 +531,75 @@ body.panel-open {
   }
 }
 
-/* ---- edge tap/swipe zones for chapter navigation (Kindle-style) ---- */
-
-.edge-nav {
+.nav-hint {
   position: fixed;
-  top: 3.2rem;
-  bottom: var(--tbar-h, 0px);
-  width: 3.4rem;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 2.1rem;
-  font-weight: 700;
-  line-height: 1;
-  opacity: 0.55;
-  background: linear-gradient(to var(--edge-fade-dir, right), var(--accent-soft), transparent);
-  transition: opacity 0.15s ease;
+  left: 50%;
+  bottom: calc(var(--tbar-h, 0px) + 1.4rem);
+  transform: translateX(-50%);
+  z-index: 44;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.78rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
-.edge-nav span {
-  width: 100%;
-  text-align: center;
+.nav-hint.visible {
+  opacity: 0.95;
+}
+
+@media (prefers-color-scheme: dark) {
+  .nav-hint {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+}
+
+/* ---- edge tap/swipe zones for chapter navigation (Kindle-style) ---- */
+
+/* Small floating buttons rather than full-height edge strips -- those
+   used to sit on top of the last/first word of every line near the
+   screen edge and steal taps meant for those words. Swipe and the
+   left/right arrow keys (see app.js) remain the primary way to move
+   between chapters; these are a visible, discoverable fallback. */
+.edge-nav {
+  position: fixed;
+  bottom: calc(var(--tbar-h, 0px) + 1.25rem);
+  z-index: 45;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--bg);
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  transition: filter 0.15s ease, transform 0.15s ease;
 }
 
 .edge-nav:hover,
 .edge-nav:focus-visible {
-  opacity: 1;
+  filter: brightness(1.1);
+  transform: scale(1.06);
 }
 
 .edge-nav.prev {
-  left: 0;
-  justify-content: flex-start;
-  --edge-fade-dir: right;
+  left: 1.25rem;
 }
 
 .edge-nav.next {
-  right: 0;
-  justify-content: flex-end;
-  --edge-fade-dir: left;
+  left: 4.45rem;
 }
 
 body.panel-open .edge-nav {

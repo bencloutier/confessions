@@ -202,7 +202,11 @@
     var updateActiveSection = function () {
       if (!chapters.length) return;
       var topbarEl = document.querySelector(".topbar");
-      var refY = (topbarEl ? topbarEl.getBoundingClientRect().bottom : 0) + 6;
+      var topbarBottom = topbarEl ? topbarEl.getBoundingClientRect().bottom : 0;
+      // A generous buffer below the header, rather than the literal top
+      // edge, so the bar updates while the new section is still well
+      // within view instead of waiting for it to reach the very top.
+      var refY = topbarBottom + Math.max(140, window.innerHeight * 0.3);
       var current = chapters[0];
       for (var i = 0; i < chapters.length; i++) {
         if (chapters[i].getBoundingClientRect().top <= refY) current = chapters[i];
@@ -285,12 +289,45 @@
     });
   }
 
-  // ---- Chapter navigation: swipe, and left/right arrow keys ----
-  // (edge-nav.prev/.next themselves are plain tappable/clickable links --
-  // this just adds the swipe gesture and keyboard shortcut on top.)
+  // ---- Chapter navigation: swipe, left/right arrow keys, and small ----
+  // ---- floating buttons (edge-nav.prev/.next are plain links) ----
 
   var edgePrev = document.querySelector(".edge-nav.prev");
   var edgeNext = document.querySelector(".edge-nav.next");
+  var navHint = document.getElementById("nav-hint");
+
+  if (navHint && (edgePrev || edgeNext)) {
+    var dismissHint = function () {
+      navHint.classList.remove("visible");
+      window.setTimeout(function () {
+        navHint.hidden = true;
+      }, 400);
+    };
+    var seenHint = null;
+    try {
+      seenHint = localStorage.getItem("confessions.seenChapterNavHint");
+    } catch (e) {
+      /* ignore */
+    }
+    if (!seenHint) {
+      navHint.hidden = false;
+      window.requestAnimationFrame(function () {
+        navHint.classList.add("visible");
+      });
+      window.setTimeout(dismissHint, 5000);
+      try {
+        localStorage.setItem("confessions.seenChapterNavHint", "true");
+      } catch (e) {
+        /* ignore */
+      }
+    }
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") dismissHint();
+    });
+    ["click", "touchstart"].forEach(function (evtName) {
+      document.addEventListener(evtName, dismissHint, { passive: true });
+    });
+  }
 
   if (edgePrev || edgeNext) {
     document.addEventListener("keydown", function (e) {
