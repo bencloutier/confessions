@@ -13,7 +13,7 @@ Open `index.html` in a browser, or (once published) visit the GitHub Pages URL f
 - **Text**: public-domain Latin text from [The Latin Library](https://www.thelatinlibrary.com/august.html) (J. J. O'Donnell's edition), fetched into `raw/`.
 - **Morphology**: [Collatinus](https://github.com/PonteIneptique/pycollatinus) (via `pycollatinus`) parses every word form offline — lemma, part of speech, case/number/gender or person/tense/mood/voice. Ambiguous forms are resolved with a frequency- and plausibility-based heuristic in `morph.py`; the word always links out to Logeion so you can check alternatives.
 - **English glosses**: short hover definitions are cross-referenced from Whitaker's Words' dictionary (`senses.py`), plus a small hand-curated list for common function words (pronouns, conjunctions, etc.) it handles poorly.
-- **English translation**: E. B. Pusey's 1838 translation (public domain), from [Project Gutenberg #3296](https://www.gutenberg.org/ebooks/3296), extracted paragraph-by-paragraph in `extract_translation.py` into `translation.json`. Pusey's paragraph breaks line up with the standard Book.Paragraph numbering almost everywhere; the handful of books where he merged or split a section differently are patched by hand in that script (see `_MERGE_AT`/`_SPLIT_AT`).
+- **English translation**: Albert C. Outler's 1955 translation, released to the public domain by the translator, from [Wikisource](https://en.wikisource.org/wiki/The_Confessions_of_Saint_Augustine_(Outler)) (`raw_en/outler/`), extracted paragraph-by-paragraph in `extract_translation.py` into `translation.json`. Outler's text is itself numbered "1. ... 2. ... 3. ..." using the same standard Book.Paragraph scheme as the Latin, so no heuristic alignment is needed -- paragraph N in the source *is* Latin section N (an earlier version of this used Pusey's 1838 translation via Project Gutenberg, whose paragraph breaks required guesswork to line up; Outler's explicit numbering, and noticeably more modern English, is why it replaced Pusey).
 - **Rendering**: `build.py` tokenizes each paragraph and generates the static HTML pages in `books/`.
 
 ## Regenerating / adding a book
@@ -40,7 +40,7 @@ and add its `<li>` entry in `index.html`.
 ## Attribution
 
 - Latin text: The Latin Library / J. J. O'Donnell's electronic edition (public domain).
-- English translation: E. B. Pusey, *The Confessions of S. Augustine* (1838), public domain, via [Project Gutenberg](https://www.gutenberg.org/ebooks/3296).
+- English translation: Albert C. Outler, *The Confessions of Saint Augustine* (1955), released to the public domain by the translator, via [Wikisource](https://en.wikisource.org/wiki/The_Confessions_of_Saint_Augustine_(Outler)).
 - Word lookups: [Logeion](https://logeion.uchicago.edu/), University of Chicago.
 - Morphology: [Collatinus](https://github.com/biblissima/collatinus) / [pycollatinus](https://github.com/PonteIneptique/pycollatinus).
 - English glosses: [Whitaker's Words](https://mk270.github.io/whitakers-words/) via the [Open Words](https://github.com/ArchimedesDigital/open_words) Python port.

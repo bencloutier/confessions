@@ -169,7 +169,7 @@ PAGE_TEMPLATE = """<!doctype html>
 {sections}
 </main>
 <footer>
-  <p>Latin text: The Latin Library / J. J. O'Donnell edition (public domain). English translation: E. B. Pusey's 1838 translation (public domain), via <a href="https://www.gutenberg.org/ebooks/3296" target="_blank" rel="noopener">Project Gutenberg</a>. Word lookups: <a href="https://logeion.uchicago.edu/" target="_blank" rel="noopener">Logeion</a> (University of Chicago), aggregating Lewis &amp; Short and Perseus morphological data. Click any word to open its full dictionary entry, declension/conjugation, and grammatical parse in the side panel.</p>
+  <p>Latin text: The Latin Library / J. J. O'Donnell edition (public domain). English translation: Albert C. Outler's 1955 translation (released to the public domain by the translator), via <a href="https://en.wikisource.org/wiki/The_Confessions_of_Saint_Augustine_(Outler)" target="_blank" rel="noopener">Wikisource</a>. Word lookups: <a href="https://logeion.uchicago.edu/" target="_blank" rel="noopener">Logeion</a> (University of Chicago), aggregating Lewis &amp; Short and Perseus morphological data. Click any word to open its full dictionary entry, declension/conjugation, and grammatical parse in the side panel.</p>
 </footer>
 
 {shared_widgets}
