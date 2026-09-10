@@ -35,7 +35,6 @@
     <option value="20.html">Caput 20 — sed tunc, lectis platonicorum…</option>
     <option value="21.html">Caput 21 — itaque avidissime arripui venerabilem…</option>
   </select>
-  <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
 </header>
 <a class="edge-nav prev" href="15.html" aria-label="Previous chapter: Caput 15" title="Caput 15"><span aria-hidden="true">&#8249;</span></a>
 <a class="edge-nav next" href="17.html" aria-label="Next chapter: Caput 17" title="Caput 17"><span aria-hidden="true">&#8250;</span></a>
@@ -55,8 +54,9 @@
 <div id="word-tooltip" class="word-tooltip" hidden></div>
 
 <aside id="translation-bar" class="translation-bar">
-  <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true" aria-label="Collapse translation">
+  <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true">
     <span class="translation-bar-num" id="translation-bar-num">&mdash;</span>
+    <span class="translation-bar-label" id="translation-bar-label">Hide Translation</span>
     <span class="translation-bar-chevron" aria-hidden="true">&#9662;</span>
   </button>
   <p id="translation-bar-text" class="translation-bar-text"></p>

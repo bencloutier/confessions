@@ -9,12 +9,12 @@
   var panelNewTab = document.getElementById("panel-newtab");
   var cheatBtn = document.getElementById("cheatsheet-btn");
   var cheatPanel = document.getElementById("cheatsheet-panel");
-  var translationToggle = document.getElementById("translation-toggle");
   var sectionJump = document.getElementById("section-jump");
   var backToTop = document.getElementById("back-to-top");
   var translationBar = document.getElementById("translation-bar");
   var translationBarToggle = document.getElementById("translation-bar-toggle");
   var translationBarNum = document.getElementById("translation-bar-num");
+  var translationBarLabel = document.getElementById("translation-bar-label");
   var translationBarText = document.getElementById("translation-bar-text");
 
   // Devices with a real hovering pointer (mouse/trackpad) get the preview
@@ -192,8 +192,7 @@
 
   function syncBarHeight() {
     if (!translationBar) return;
-    var hidden = document.body.classList.contains("hide-translation");
-    document.documentElement.style.setProperty("--tbar-h", hidden ? "0px" : translationBar.offsetHeight + "px");
+    document.documentElement.style.setProperty("--tbar-h", translationBar.offsetHeight + "px");
   }
 
   if (translationBar && translationBarText) {
@@ -238,6 +237,8 @@
     var applyBarCollapsed = function (collapsed) {
       document.body.classList.toggle("translation-collapsed", collapsed);
       translationBarToggle.setAttribute("aria-expanded", String(!collapsed));
+      translationBarToggle.setAttribute("aria-label", collapsed ? "Show translation" : "Hide translation");
+      if (translationBarLabel) translationBarLabel.textContent = collapsed ? "Show Translation" : "Hide Translation";
       syncBarHeight();
     };
     var storedCollapsed = null;
@@ -253,37 +254,6 @@
       applyBarCollapsed(collapsed);
       try {
         localStorage.setItem("confessions.translationCollapsed", String(collapsed));
-      } catch (e) {
-        /* ignore */
-      }
-    });
-  }
-
-  // ---- English translation toggle (remembered across books) ----
-
-  function applyTranslationVisibility(visible) {
-    document.body.classList.toggle("hide-translation", !visible);
-    if (translationToggle) {
-      translationToggle.textContent = visible ? "Hide translation" : "Show translation";
-      translationToggle.setAttribute("aria-pressed", String(visible));
-    }
-    syncBarHeight();
-  }
-
-  if (translationToggle) {
-    var stored = null;
-    try {
-      stored = localStorage.getItem("confessions.showTranslation");
-    } catch (e) {
-      /* private browsing / storage blocked -- default to visible */
-    }
-    applyTranslationVisibility(stored !== "false");
-
-    translationToggle.addEventListener("click", function () {
-      var nowVisible = document.body.classList.contains("hide-translation");
-      applyTranslationVisibility(nowVisible);
-      try {
-        localStorage.setItem("confessions.showTranslation", String(nowVisible));
       } catch (e) {
         /* ignore */
       }

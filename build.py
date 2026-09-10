@@ -180,7 +180,6 @@ CHAPTER_PAGE_TEMPLATE = """<!doctype html>
     <option value="">Jump to chapter &hellip;</option>
     {chapter_options}
   </select>
-  <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
 </header>
 {prev_link}
 {next_link}
@@ -228,8 +227,9 @@ SHARED_WIDGETS = """
 <div id="word-tooltip" class="word-tooltip" hidden></div>
 
 <aside id="translation-bar" class="translation-bar">
-  <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true" aria-label="Collapse translation">
+  <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true">
     <span class="translation-bar-num" id="translation-bar-num">&mdash;</span>
+    <span class="translation-bar-label" id="translation-bar-label">Hide Translation</span>
     <span class="translation-bar-chevron" aria-hidden="true">&#9662;</span>
   </button>
   <p id="translation-bar-text" class="translation-bar-text"></p>

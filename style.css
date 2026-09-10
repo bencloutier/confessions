@@ -101,22 +101,6 @@ html {
   padding: 0.3rem 0.35rem;
 }
 
-.toggle-btn {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.78rem;
-  color: var(--muted);
-  background: var(--accent-soft);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  padding: 0.3rem 0.6rem;
-  cursor: pointer;
-}
-
-.toggle-btn:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
 main {
   max-width: 980px;
   margin: 0 auto;
@@ -171,27 +155,40 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   width: 100%;
   border: none;
+  border-bottom: 1px solid var(--rule);
   background: var(--accent-soft);
-  color: var(--muted);
+  color: var(--accent);
   font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  padding: 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.65rem;
   cursor: pointer;
   flex: 0 0 auto;
+  transition: background 0.15s ease;
+}
+
+.translation-bar-toggle:hover,
+.translation-bar-toggle:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
 }
 
 .translation-bar-num {
   font-weight: 600;
-  color: var(--accent);
+  font-size: 0.75rem;
+  color: inherit;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
 }
 
 .translation-bar-chevron {
   transition: transform 0.15s ease;
-  font-size: 0.65rem;
+  font-size: 0.85rem;
 }
 
 .translation-bar-text {
@@ -211,10 +208,6 @@ body.translation-collapsed .translation-bar-text {
 
 body.translation-collapsed .translation-bar-chevron {
   transform: rotate(180deg);
-}
-
-body.hide-translation .translation-bar {
-  display: none;
 }
 
 .w-wrap {

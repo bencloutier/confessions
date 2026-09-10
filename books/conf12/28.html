@@ -46,7 +46,6 @@
     <option value="31.html">Caput 31 — ita cum alius dixerit,…</option>
     <option value="32.html">Caput 32 — postremo, domine, qui deus…</option>
   </select>
-  <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
 </header>
 <a class="edge-nav prev" href="27.html" aria-label="Previous chapter: Caput 27" title="Caput 27"><span aria-hidden="true">&#8249;</span></a>
 <a class="edge-nav next" href="29.html" aria-label="Next chapter: Caput 29" title="Caput 29"><span aria-hidden="true">&#8250;</span></a>
@@ -71,8 +70,9 @@
 <div id="word-tooltip" class="word-tooltip" hidden></div>
 
 <aside id="translation-bar" class="translation-bar">
-  <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true" aria-label="Collapse translation">
+  <button id="translation-bar-toggle" class="translation-bar-toggle" aria-expanded="true">
     <span class="translation-bar-num" id="translation-bar-num">&mdash;</span>
+    <span class="translation-bar-label" id="translation-bar-label">Hide Translation</span>
     <span class="translation-bar-chevron" aria-hidden="true">&#9662;</span>
   </button>
   <p id="translation-bar-text" class="translation-bar-text"></p>
