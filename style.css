@@ -33,51 +33,58 @@ body {
 
 a { color: var(--link); }
 
+html {
+  scroll-padding-top: 4rem;
+}
+
 .topbar {
   position: sticky;
   top: 0;
   z-index: 5;
   background: var(--bg);
   border-bottom: 1px solid var(--rule);
-  padding: 0.7rem 1.25rem 0.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.topbar-row {
+  padding: 0.5rem 0.9rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.82rem;
 }
 
-.topbar h1 {
-  font-size: 1.05rem;
-  letter-spacing: 0.04em;
-  margin: 0;
-  text-align: center;
+.topbar .home {
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.topbar-book {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+.topbar-book strong {
   font-weight: 600;
 }
 
-.topbar .home { font-size: 0.9rem; white-space: nowrap; }
-
-.booknav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem;
-  font-size: 0.85rem;
+.topbar-book a,
+.disabled-arrow {
+  padding: 0.1rem 0.3rem;
 }
 
-.booknav-side {
-  flex: 0 0 auto;
-  min-width: 2.5rem;
-  white-space: nowrap;
+.disabled-arrow {
+  opacity: 0.3;
 }
 
-.booknav-side-right {
-  text-align: right;
+.book-title {
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+  font-weight: 600;
+  margin: 0.4rem 0 1.8rem;
 }
 
 .section-jump {
@@ -85,13 +92,13 @@ a { color: var(--link); }
   min-width: 0;
   max-width: 22rem;
   margin: 0 auto;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-family: inherit;
   font-size: 0.8rem;
   color: var(--ink);
   background: var(--accent-soft);
   border: 1px solid var(--rule);
   border-radius: 4px;
-  padding: 0.35rem 0.4rem;
+  padding: 0.3rem 0.35rem;
 }
 
 .toggle-btn {
@@ -508,11 +515,21 @@ body.panel-open {
 
 @media (max-width: 600px) {
   .topbar {
-    padding: 0.6rem 0.9rem 0.7rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.76rem;
+    row-gap: 0.4rem;
   }
 
-  .topbar h1 {
-    font-size: 0.85rem;
+  .section-jump {
+    order: 1;
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .book-title {
+    font-size: 1rem;
+    margin: 0.2rem 0 1.2rem;
   }
 
   main {

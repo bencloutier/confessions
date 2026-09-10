@@ -159,21 +159,16 @@ PAGE_TEMPLATE = """<!doctype html>
 </head>
 <body>
 <header class="topbar">
-  <div class="topbar-row">
-    <a class="home" href="../index.html">&larr; Index</a>
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-  </div>
-  <h1>AVGVSTINI CONFESSIONVM {title_upper}</h1>
-  <nav class="booknav">
-    <span class="booknav-side">{prev_link}</span>
-    <select id="section-jump" class="section-jump" aria-label="Jump to section">
-      <option value="">Jump to &hellip;</option>
-      {section_options}
-    </select>
-    <span class="booknav-side booknav-side-right">{next_link}</span>
-  </nav>
+  <a class="home" href="../index.html">&larr; Index</a>
+  <span class="topbar-book">{prev_link}<strong>{roman}</strong>{next_link}</span>
+  <select id="section-jump" class="section-jump" aria-label="Jump to section">
+    <option value="">Jump to &hellip;</option>
+    {section_options}
+  </select>
+  <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
 </header>
 <main>
+<h1 class="book-title">AVGVSTINI CONFESSIONVM {title_upper}</h1>
 {sections}
 </main>
 <footer>
@@ -333,8 +328,12 @@ def build_book(n: int):
         option_label = html.escape(f"{display} — {preview}…")
         section_options.append(f'<option value="{sid_label}">{option_label}</option>')
 
-    prev_link = f'<a href="conf{n-1}.html">&laquo; {ROMAN[n-1]}</a>' if n > 1 else ""
-    next_link = f'<a href="conf{n+1}.html">{ROMAN[n+1]} &raquo;</a>' if n < 13 else ""
+    prev_link = (
+        f'<a href="conf{n-1}.html" title="Liber {ROMAN[n-1]}">&laquo;</a>' if n > 1 else '<span class="disabled-arrow">&laquo;</span>'
+    )
+    next_link = (
+        f'<a href="conf{n+1}.html" title="Liber {ROMAN[n+1]}">&raquo;</a>' if n < 13 else '<span class="disabled-arrow">&raquo;</span>'
+    )
 
     page = PAGE_TEMPLATE.format(
         roman=ROMAN[n],
