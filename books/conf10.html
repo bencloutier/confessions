@@ -2,16 +2,93 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones X — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER DECIMUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf9.html">&laquo; IX</a><a href="conf11.html">XI &raquo;</a>
+    <span class="booknav-side"><a href="conf9.html">&laquo; IX</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="10.1.1">10.1 — cognoscam te, cognitor meus, cognoscam…</option>
+    <option value="10.2.2">10.2 — et tibi quidem, domine, cuius…</option>
+    <option value="10.3.3">10.3 — quid mihi ergo est cum…</option>
+    <option value="10.3.4">10.4 — verum tamen tu, medice meus…</option>
+    <option value="10.4.5">10.5 — sed quo fructu id volunt?…</option>
+    <option value="10.4.6">10.6 — hic est fructus confessionum mearum,…</option>
+    <option value="10.5.7">10.7 — tu enim, domine, diiudicas me,…</option>
+    <option value="10.6.8">10.8 — non dubia sed certa conscientia,…</option>
+    <option value="10.6.9">10.9 — et quid est hoc? interrogavi…</option>
+    <option value="10.6.10">10.10 — nonne omnibus quibus integer sensus…</option>
+    <option value="10.7.11">10.11 — quid ergo amo, cum deum…</option>
+    <option value="10.8.12">10.12 — transibo ergo et istam naturae…</option>
+    <option value="10.8.13">10.13 — ibi sunt omnia distincte generatimque…</option>
+    <option value="10.8.14">10.14 — intus haec ago, in aula…</option>
+    <option value="10.8.15">10.15 — magna ista vis est memoriae,…</option>
+    <option value="10.9.16">10.16 — sed non ea sola gestat…</option>
+    <option value="10.10.17">10.17 — at vero, cum audio tria…</option>
+    <option value="10.11.18">10.18 — quocirca invenimus nihil esse aliud…</option>
+    <option value="10.12.19">10.19 — item continet memoria numerorum dimensionumque…</option>
+    <option value="10.13.20">10.20 — haec omnia memoria teneo et…</option>
+    <option value="10.14.21">10.21 — affectiones quoque animi mei eadem…</option>
+    <option value="10.14.22">10.22 — sed ecce de memoria profero,…</option>
+    <option value="10.15.23">10.23 — sed utrum per imagines an…</option>
+    <option value="10.16.24">10.24 — quid, cum oblivionem nomino atque…</option>
+    <option value="10.16.25">10.25 — ego certe, domine, laboro hic…</option>
+    <option value="10.17.26">10.26 — magna vis est memoriae, nescio…</option>
+    <option value="10.18.27">10.27 — perdiderat enim mulier dragmam et…</option>
+    <option value="10.19.28">10.28 — quid, cum ipsa memoria perdit…</option>
+    <option value="10.20.29">10.29 — quomodo ergo te quaero, domine?…</option>
+    <option value="10.21.30">10.30 — numquid ita ut meminit Carthaginem…</option>
+    <option value="10.21.31">10.31 — ubi ergo et quando expertus…</option>
+    <option value="10.22.32">10.32 — absit, domine, absit a corde…</option>
+    <option value="10.23.33">10.33 — non ergo certum est quod…</option>
+    <option value="10.23.34">10.34 — cur autem veritas parit odium…</option>
+    <option value="10.24.35">10.35 — ecce quantum spatiatus sum in…</option>
+    <option value="10.25.36">10.36 — sed ubi manes in memoria…</option>
+    <option value="10.26.37">10.37 — ubi ergo te inveni, ut…</option>
+    <option value="10.27.38">10.38 — sero te amavi, pulchritudo tam…</option>
+    <option value="10.28.39">10.39 — cum inhaesero tibi ex omni…</option>
+    <option value="10.29.40">10.40 — Et tota spes mea nisi…</option>
+    <option value="10.30.41">10.41 — iubes certe ut contineam a…</option>
+    <option value="10.30.42">10.42 — numquid non potens est manus…</option>
+    <option value="10.31.43">10.43 — est alia malitia diei, quae…</option>
+    <option value="10.31.44">10.44 — hoc me docuisti, ut quemadmodum…</option>
+    <option value="10.31.45">10.45 — audio vocem iubentis dei mei,…</option>
+    <option value="10.31.46">10.46 — docuisti me, pater bone, omnia…</option>
+    <option value="10.31.47">10.47 — in his ergo temptationibus positus…</option>
+    <option value="10.32.48">10.48 — de inlecebra odorum non satago…</option>
+    <option value="10.33.49">10.49 — voluptates aurium tenacius me implicaverant…</option>
+    <option value="10.33.50">10.50 — aliquando autem hanc ipsam fallaciam…</option>
+    <option value="10.34.51">10.51 — restat voluptas oculorum istorum carnis…</option>
+    <option value="10.34.52">10.52 — o lux quam videbat Tobis,…</option>
+    <option value="10.34.53">10.53 — quam innumerabilia variis artibus et…</option>
+    <option value="10.35.54">10.54 — huc accedit alia forma temptationis…</option>
+    <option value="10.35.55">10.55 — ex hoc autem evidentius discernitur…</option>
+    <option value="10.35.56">10.56 — in hac tam immensa silva…</option>
+    <option value="10.35.57">10.57 — verum tamen in quam multis…</option>
+    <option value="10.36.58">10.58 — numquid etiam hoc inter contemnenda…</option>
+    <option value="10.36.59">10.59 — sed numquid, domine, qui solus…</option>
+    <option value="10.37.60">10.60 — temptamur his temptationibus cotidie, domine,…</option>
+    <option value="10.37.61">10.61 — quid igitur tibi in hoc…</option>
+    <option value="10.37.62">10.62 — ecce in te, veritas, video…</option>
+    <option value="10.38.63">10.63 — egenus et pauper ego sum,…</option>
+    <option value="10.39.64">10.64 — intus etiam, intus est aliud…</option>
+    <option value="10.40.65">10.65 — ubi non mecum ambulasti, veritas,…</option>
+    <option value="10.41.66">10.66 — ideoque consideravi languores peccatorum meorum…</option>
+    <option value="10.42.67">10.67 — quem invenirem qui me reconciliaret…</option>
+    <option value="10.43.68">10.68 — verax autem mediator, quem secreta…</option>
+    <option value="10.43.69">10.69 — quomodo nos amasti, pater bone,…</option>
+    <option value="10.43.70">10.70 — conterritus peccatis meis et mole…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf11.html">XI &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -453,6 +530,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

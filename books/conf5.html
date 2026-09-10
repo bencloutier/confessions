@@ -2,16 +2,48 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones V — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER QUINTUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf4.html">&laquo; IV</a><a href="conf6.html">VI &raquo;</a>
+    <span class="booknav-side"><a href="conf4.html">&laquo; IV</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="5.1.1">5.1 — accipe sacrificium confessionum mearum de…</option>
+    <option value="5.2.2">5.2 — eant et fugiant a te…</option>
+    <option value="5.3.3">5.3 — proloquar in conspectu dei mei…</option>
+    <option value="5.3.4">5.4 — invenerunt et praenuntiaverunt ante multos…</option>
+    <option value="5.3.5">5.5 — sed non noverunt viam, verbum…</option>
+    <option value="5.3.6">5.6 — multa tamen ab eis ex…</option>
+    <option value="5.4.7">5.7 — numquid, domine deus veritatis, quisquis…</option>
+    <option value="5.5.8">5.8 — sed tamen quis quaerebat Manichaeum…</option>
+    <option value="5.5.9">5.9 — cum enim audio christianum aliquem…</option>
+    <option value="5.6.10">5.10 — et per annos ferme ipsos…</option>
+    <option value="5.6.11">5.11 — igitur aviditas mea, qua illum…</option>
+    <option value="5.7.12">5.12 — nam posteaquam ille mihi imperitus…</option>
+    <option value="5.7.13">5.13 — refracto itaque studio quod intenderam…</option>
+    <option value="5.8.14">5.14 — egisti ergo mecum ut mihi…</option>
+    <option value="5.8.15">5.15 — sed quare hinc abirem et…</option>
+    <option value="5.9.16">5.16 — et ecce excipior ibi flagello…</option>
+    <option value="5.9.17">5.17 — non itaque video quomodo sanaretur,…</option>
+    <option value="5.10.18">5.18 — recreasti ergo me ab illa…</option>
+    <option value="5.10.19">5.19 — etenim suborta est etiam mihi…</option>
+    <option value="5.10.20">5.20 — hinc enim et mali substantiam…</option>
+    <option value="5.11.21">5.21 — deinde quae illi in scripturis…</option>
+    <option value="5.12.22">5.22 — sedulo ergo agere coeperam, propter…</option>
+    <option value="5.13.23">5.23 — itaque posteaquam missum est a…</option>
+    <option value="5.14.24">5.24 — cum enim non satagerem discere…</option>
+    <option value="5.14.25">5.25 — tum vero fortiter intendi animum,…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf6.html">VI &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -183,6 +215,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

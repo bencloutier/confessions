@@ -2,16 +2,76 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones XIII — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER TERTIUS DECIMUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf12.html">&laquo; XII</a>
+    <span class="booknav-side"><a href="conf12.html">&laquo; XII</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="13.1.1">13.1 — invoco te, deus meus, misericordia…</option>
+    <option value="13.2.2">13.2 — ex plenitudine quippe bonitatis tuae…</option>
+    <option value="13.2.3">13.3 — quid te promeruit materies corporalis,…</option>
+    <option value="13.3.4">13.4 — quod autem in primis conditionibus…</option>
+    <option value="13.4.5">13.5 — quid ergo tibi deesset ad…</option>
+    <option value="13.5.6">13.6 — ecce apparet mihi in aenigmate…</option>
+    <option value="13.6.7">13.7 — sed quae causa fuerat --…</option>
+    <option value="13.7.8">13.8 — iam hinc sequatur qui potest…</option>
+    <option value="13.8.9">13.9 — defluxit angelus, defluxit anima hominis…</option>
+    <option value="13.9.10">13.10 — numquid aut pater aut filius…</option>
+    <option value="13.10.11">13.11 — beata creatura quae non novit…</option>
+    <option value="13.11.12">13.12 — trinitatem omnipotentem quis intelleget? et…</option>
+    <option value="13.12.13">13.13 — procede in confessione, fides mea;…</option>
+    <option value="13.13.14">13.14 — et tamen adhuc per fidem,…</option>
+    <option value="13.14.15">13.15 — et ego dico, &#x27;deus meus…</option>
+    <option value="13.15.16">13.16 — aut quis nisi tu, deus…</option>
+    <option value="13.15.17">13.17 — videamus, domine, caelos, opera digitorum…</option>
+    <option value="13.15.18">13.18 — sunt aliae aquae super hoc…</option>
+    <option value="13.16.19">13.19 — nam sicut omnino tu es,…</option>
+    <option value="13.17.20">13.20 — quis congregavit amaricantes in societatem…</option>
+    <option value="13.17.21">13.21 — at animas sitientes tibi et…</option>
+    <option value="13.18.22">13.22 — ita, domine, ita, oro te,…</option>
+    <option value="13.18.23">13.23 — sapientiae tamquam luminare maius propter…</option>
+    <option value="13.19.24">13.24 — &#x27;sed prius lavamini, mundi estote,…</option>
+    <option value="13.19.25">13.25 — vos autem genus electum, infirma…</option>
+    <option value="13.20.26">13.26 — concipiat et mare et pariat…</option>
+    <option value="13.20.27">13.27 — numquid mentior aut mixtione misceo…</option>
+    <option value="13.20.28">13.28 — et pulchra sunt omnia faciente…</option>
+    <option value="13.21.29">13.29 — ac per hoc in verbo…</option>
+    <option value="13.21.30">13.30 — operentur ergo iam in terra…</option>
+    <option value="13.21.31">13.31 — verbum autem tuum, deus, fons…</option>
+    <option value="13.22.32">13.32 — ecce enim, domine deus noster,…</option>
+    <option value="13.23.33">13.33 — quod autem iudicat omnia, hoc…</option>
+    <option value="13.23.34">13.34 — ideoque homo, quem fecisti ad…</option>
+    <option value="13.24.35">13.35 — sed quid est hoc et…</option>
+    <option value="13.24.36">13.36 — quid igitur dicam, lumen meum,…</option>
+    <option value="13.24.37">13.37 — itaque si naturas ipsas rerum…</option>
+    <option value="13.25.38">13.38 — volo etiam dicere, domine deus…</option>
+    <option value="13.26.39">13.39 — pascuntur autem his escis qui…</option>
+    <option value="13.26.40">13.40 — unde ergo gaudes, o Paule…</option>
+    <option value="13.26.41">13.41 — numquid propter usus suos, quia…</option>
+    <option value="13.27.42">13.42 — ideoque dicam quod verum est…</option>
+    <option value="13.28.43">13.43 — et vidisti, deus, omnia quae…</option>
+    <option value="13.29.44">13.44 — et attendi, ut invenirem utrum…</option>
+    <option value="13.30.45">13.45 — et audivi, domine deus meus,…</option>
+    <option value="13.31.46">13.46 — qui autem per spiritum tuum…</option>
+    <option value="13.32.47">13.47 — gratias tibi, domine! videmus caelum…</option>
+    <option value="13.33.48">13.48 — laudant te opera tua ut…</option>
+    <option value="13.34.49">13.49 — inspeximus etiam propter quorum figurationem…</option>
+    <option value="13.35.50">13.50 — domine deus, pacem da nobis…</option>
+    <option value="13.36.51">13.51 — autem septimus sine vespera est…</option>
+    <option value="13.37.52">13.52 — etiam tunc enim sic requiesces…</option>
+    <option value="13.38.53">13.53 — nos itaque ista quae fecisti…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"></span>
   </nav>
 </header>
 <main>
@@ -351,6 +411,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

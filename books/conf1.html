@@ -2,16 +2,54 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones I — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER PRIMUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf2.html">II &raquo;</a>
+    <span class="booknav-side"></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="1.1.1">1.1 — magnus es, domine, et laudabilis…</option>
+    <option value="1.2.2">1.2 — et quomodo invocabo deum meum,…</option>
+    <option value="1.3.3">1.3 — capiunt ergone te caelum et…</option>
+    <option value="1.4.4">1.4 — quid es ergo, deus meus?…</option>
+    <option value="1.5.5">1.5 — quis mihi dabit adquiescere in…</option>
+    <option value="1.5.6">1.6 — angusta est domus animae meae…</option>
+    <option value="1.6.7">1.7 — sed tamen sine me loqui…</option>
+    <option value="1.6.8">1.8 — post et ridere coepi, dormiens…</option>
+    <option value="1.6.9">1.9 — et ecce infantia mea olim…</option>
+    <option value="1.6.10">1.10 — confiteor tibi, domine caeli et…</option>
+    <option value="1.7.11">1.11 — exaudi, deus. vae peccatis hominum!…</option>
+    <option value="1.7.12">1.12 — tu itaque, domine deus meus,…</option>
+    <option value="1.8.13">1.13 — nonne ab infantia huc pergens…</option>
+    <option value="1.9.14">1.14 — deus, deus meus, quas ibi…</option>
+    <option value="1.9.15">1.15 — estne quisquam, domine, tam magnus…</option>
+    <option value="1.10.16">1.16 — et tamen peccabam, domine deus,…</option>
+    <option value="1.11.17">1.17 — audieram enim ego adhuc puer…</option>
+    <option value="1.11.18">1.18 — rogo te, deus meus: vellem…</option>
+    <option value="1.12.19">1.19 — in ipsa tamen pueritia, de…</option>
+    <option value="1.13.20">1.20 — quid autem erat causae cur…</option>
+    <option value="1.13.21">1.21 — quid enim miserius misero non…</option>
+    <option value="1.13.22">1.22 — sed nunc in anima mea…</option>
+    <option value="1.14.23">1.23 — cur ergo graecam etiam grammaticam…</option>
+    <option value="1.15.24">1.24 — exaudi, domine, deprecationem meam, ne…</option>
+    <option value="1.16.25">1.25 — sed vae tibi, flumen moris…</option>
+    <option value="1.16.26">1.26 — et tamen, o flumen tartareum,…</option>
+    <option value="1.17.27">1.27 — sine me, deus meus, dicere…</option>
+    <option value="1.18.28">1.28 — quid autem mirum, quod in…</option>
+    <option value="1.18.29">1.29 — vide, domine deus, et patienter,…</option>
+    <option value="1.19.30">1.30 — horum ego puer morum in…</option>
+    <option value="1.20.31">1.31 — sed tamen, domine, tibi excellentissimo…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf2.html">II &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -219,6 +257,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

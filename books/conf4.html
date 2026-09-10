@@ -2,16 +2,54 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones IV — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER QUARTUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf3.html">&laquo; III</a><a href="conf5.html">V &raquo;</a>
+    <span class="booknav-side"><a href="conf3.html">&laquo; III</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="4.1.1">4.1 — per idem tempus annorum novem,…</option>
+    <option value="4.2.2">4.2 — docebam in illis annis artem…</option>
+    <option value="4.2.3">4.3 — recolo etiam, cum mihi theatrici…</option>
+    <option value="4.3.4">4.4 — ideoque illos planos quos mathematicos…</option>
+    <option value="4.3.5">4.5 — erat eo tempore vir sagax,…</option>
+    <option value="4.3.6">4.6 — et hoc quidem ab illo…</option>
+    <option value="4.4.7">4.7 — in illis annis quo primum…</option>
+    <option value="4.4.8">4.8 — quis laudes tuas enumerat unus…</option>
+    <option value="4.4.9">4.9 — quo dolore contenebratum est cor…</option>
+    <option value="4.5.10">4.10 — et nunc, domine, iam illa…</option>
+    <option value="4.6.11">4.11 — quid autem ista loquor? non…</option>
+    <option value="4.7.12">4.12 — o dementiam nescientem diligere homines…</option>
+    <option value="4.8.13">4.13 — non vacant tempora nec otiose…</option>
+    <option value="4.9.14">4.14 — hoc est quod diligitur in…</option>
+    <option value="4.10.15">4.15 — deus virtutum, converte nos et…</option>
+    <option value="4.11.16">4.16 — noli esse vana, anima mea,…</option>
+    <option value="4.11.17">4.17 — ut quid perversa sequeris carnem…</option>
+    <option value="4.12.18">4.18 — si placent corpora, deum ex…</option>
+    <option value="4.12.19">4.19 — tulit mortem nostram et occidit…</option>
+    <option value="4.13.20">4.20 — haec tunc non noveram, et…</option>
+    <option value="4.14.21">4.21 — quid est autem quod me…</option>
+    <option value="4.14.22">4.22 — sic enim tunc amabam homines…</option>
+    <option value="4.14.23">4.23 — at ille rhetor ex eo…</option>
+    <option value="4.15.24">4.24 — sed tantae rei cardinem in…</option>
+    <option value="4.15.25">4.25 — sicut enim facinora sunt, si…</option>
+    <option value="4.15.26">4.26 — sed ego conabar ad te…</option>
+    <option value="4.15.27">4.27 — et eram aetate annorum fortasse…</option>
+    <option value="4.16.28">4.28 — et quid mihi proderat quod…</option>
+    <option value="4.16.29">4.29 — quid hoc mihi proderat, quando…</option>
+    <option value="4.16.30">4.30 — et quid mihi proderat quod…</option>
+    <option value="4.16.31">4.31 — sed quid mihi hoc proderat,…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf5.html">V &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -219,6 +257,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

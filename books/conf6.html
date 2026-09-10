@@ -2,16 +2,49 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones VI — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER SEXTUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf5.html">&laquo; V</a><a href="conf7.html">VII &raquo;</a>
+    <span class="booknav-side"><a href="conf5.html">&laquo; V</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="6.1.1">6.1 — spes mea a iuventute mea,…</option>
+    <option value="6.2.2">6.2 — itaque cum ad memorias sanctorum,…</option>
+    <option value="6.3.3">6.3 — nec iam ingemescebam orando ut…</option>
+    <option value="6.3.4">6.4 — sed certe mihi nulla dabatur…</option>
+    <option value="6.4.5">6.5 — cum ergo nescirem quomodo haec…</option>
+    <option value="6.4.6">6.6 — gaudebam etiam quod vetera scripta…</option>
+    <option value="6.5.7">6.7 — ex hoc tamen quoque iam…</option>
+    <option value="6.5.8">6.8 — sed id credebam aliquando robustius,…</option>
+    <option value="6.6.9">6.9 — inhiabam honoribus, lucris, coniugio, et…</option>
+    <option value="6.6.10">6.10 — recedant ergo ab anima mea…</option>
+    <option value="6.7.11">6.11 — congemescebamus in his qui simul…</option>
+    <option value="6.7.12">6.12 — sed enim de memoria mihi…</option>
+    <option value="6.8.13">6.13 — non sane relinquens incantatam sibi…</option>
+    <option value="6.9.14">6.14 — verum tamen iam hoc ad…</option>
+    <option value="6.9.15">6.15 — sed hactenus docendus fuit. statim…</option>
+    <option value="6.10.16">6.16 — hunc ergo Romae inveneram, et…</option>
+    <option value="6.10.17">6.17 — Nebridius etiam, qui relicta patria…</option>
+    <option value="6.11.18">6.18 — et ego maxime mirabar, satagens…</option>
+    <option value="6.11.19">6.19 — et dimittamus haec vana et…</option>
+    <option value="6.11.20">6.20 — cum haec dicebam et alternabant…</option>
+    <option value="6.12.21">6.21 — prohibebat me sane Alypius ab…</option>
+    <option value="6.12.22">6.22 — cum enim me ille miraretur,…</option>
+    <option value="6.13.23">6.23 — et instabatur impigre ut ducerem…</option>
+    <option value="6.14.24">6.24 — et multi amici agitaveramus animo…</option>
+    <option value="6.15.25">6.25 — interea mea peccata multiplicabantur, et…</option>
+    <option value="6.16.26">6.26 — tibi laus, tibi gloria, fons…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf7.html">VII &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -189,6 +222,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

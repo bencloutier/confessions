@@ -2,16 +2,44 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones III — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER TERTIUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf2.html">&laquo; II</a><a href="conf4.html">IV &raquo;</a>
+    <span class="booknav-side"><a href="conf2.html">&laquo; II</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="3.1.1">3.1 — veni Carthaginem, et circumstrepebat me…</option>
+    <option value="3.2.2">3.2 — rapiebant me spectacula theatrica, plena…</option>
+    <option value="3.2.3">3.3 — ergo amantur et dolores. certe…</option>
+    <option value="3.2.4">3.4 — at ego tunc miser dolere…</option>
+    <option value="3.3.5">3.5 — et circumvolabat super me fidelis…</option>
+    <option value="3.3.6">3.6 — habebant et illa studia quae…</option>
+    <option value="3.4.7">3.7 — inter hos ego inbecilla tunc…</option>
+    <option value="3.4.8">3.8 — quomodo ardebam, deus meus, quomodo…</option>
+    <option value="3.5.9">3.9 — itaque institui animum intendere in…</option>
+    <option value="3.6.10">3.10 — itaque incidi in homines superbe…</option>
+    <option value="3.6.11">3.11 — ubi ergo mihi tunc eras…</option>
+    <option value="3.7.12">3.12 — nesciebam enim aliud vere quod…</option>
+    <option value="3.7.13">3.13 — et non noveram iustitiam veram…</option>
+    <option value="3.7.14">3.14 — haec ergo tunc nesciebam et…</option>
+    <option value="3.8.15">3.15 — numquid aliquando aut alicubi iniustum…</option>
+    <option value="3.8.16">3.16 — item in facinoribus, ubi libido…</option>
+    <option value="3.9.17">3.17 — sed inter flagitia et facinora…</option>
+    <option value="3.10.18">3.18 — haec ego nesciens inridebam illos…</option>
+    <option value="3.11.19">3.19 — et misisti manum tuam ex…</option>
+    <option value="3.11.20">3.20 — unde illud etiam, quod cum…</option>
+    <option value="3.12.21">3.21 — et dedisti alterum responsum interim…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf4.html">IV &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -159,6 +187,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

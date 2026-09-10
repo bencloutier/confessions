@@ -10,6 +10,14 @@
   var cheatBtn = document.getElementById("cheatsheet-btn");
   var cheatPanel = document.getElementById("cheatsheet-panel");
   var translationToggle = document.getElementById("translation-toggle");
+  var sectionJump = document.getElementById("section-jump");
+  var backToTop = document.getElementById("back-to-top");
+
+  // Devices with a real hovering pointer (mouse/trackpad) get the preview
+  // tooltip on hover and a single click opens the dictionary panel
+  // straight away. Touch devices have no hover at all, so the first tap
+  // has to do the tooltip's job -- see the click handler below.
+  var hasHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   function closestWord(el) {
     while (el && el !== document.body) {
@@ -19,22 +27,26 @@
     return null;
   }
 
-  // ---- Hover tooltip (lemma + short English gloss + parse tag) ----
+  // ---- Tooltip (lemma + short English gloss + parse tag) ----
+  // On hover-capable devices it's a transient preview. On touch, tapping a
+  // word pins it open (with an explicit "open" affordance) instead of
+  // jumping straight to the panel.
 
-  function showTooltip(el) {
+  var pinnedWord = null;
+
+  function tooltipHTML(el, pinned) {
     var lemma = el.dataset.lemma;
-    if (!lemma) {
-      tooltip.hidden = true;
-      return;
-    }
+    if (!lemma) return "";
     var gloss = el.dataset.gloss;
     var tag = el.dataset.tag;
-    var html = "<strong>" + lemma + "</strong>";
-    if (gloss) html += " &mdash; " + gloss;
-    if (tag) html += '<span class="tt-tag">' + tag + "</span>";
-    tooltip.innerHTML = html;
-    tooltip.hidden = false;
+    var out = "<strong>" + lemma + "</strong>";
+    if (gloss) out += " &mdash; " + gloss;
+    if (tag) out += '<span class="tt-tag">' + tag + "</span>";
+    if (pinned) out += '<button type="button" class="tt-open">Open full entry &#8599;</button>';
+    return out;
+  }
 
+  function positionTooltip(el) {
     var rect = el.getBoundingClientRect();
     var top = rect.top + window.scrollY - tooltip.offsetHeight - 10;
     if (top < window.scrollY + 4) top = rect.bottom + window.scrollY + 10;
@@ -44,26 +56,52 @@
     tooltip.style.left = left + "px";
   }
 
-  function hideTooltip() {
-    tooltip.hidden = true;
+  function showTooltip(el) {
+    var html = tooltipHTML(el, false);
+    if (!html) {
+      tooltip.hidden = true;
+      return;
+    }
+    tooltip.innerHTML = html;
+    tooltip.hidden = false;
+    tooltip.classList.remove("pinned");
+    positionTooltip(el);
   }
 
-  document.addEventListener("mouseover", function (e) {
-    var el = closestWord(e.target);
-    if (el) showTooltip(el);
-  });
-  document.addEventListener("mouseout", function (e) {
-    var el = closestWord(e.target);
-    if (el) hideTooltip();
-  });
-  document.addEventListener("focusin", function (e) {
-    var el = closestWord(e.target);
-    if (el) showTooltip(el);
-  });
-  document.addEventListener("focusout", function (e) {
-    var el = closestWord(e.target);
-    if (el) hideTooltip();
-  });
+  function pinTooltip(el) {
+    var html = tooltipHTML(el, true);
+    if (!html) return;
+    pinnedWord = el;
+    tooltip.innerHTML = html;
+    tooltip.hidden = false;
+    tooltip.classList.add("pinned");
+    positionTooltip(el);
+  }
+
+  function hideTooltip() {
+    tooltip.hidden = true;
+    tooltip.classList.remove("pinned");
+    pinnedWord = null;
+  }
+
+  if (hasHover) {
+    document.addEventListener("mouseover", function (e) {
+      var el = closestWord(e.target);
+      if (el) showTooltip(el);
+    });
+    document.addEventListener("mouseout", function (e) {
+      var el = closestWord(e.target);
+      if (el) hideTooltip();
+    });
+    document.addEventListener("focusin", function (e) {
+      var el = closestWord(e.target);
+      if (el) showTooltip(el);
+    });
+    document.addEventListener("focusout", function (e) {
+      var el = closestWord(e.target);
+      if (el) hideTooltip();
+    });
+  }
 
   // ---- In-page lookup panel (Logeion in an iframe, no new tab) ----
 
@@ -80,34 +118,67 @@
 
   function closePanel() {
     panel.hidden = true;
-    overlay.hidden = true;
     frame.src = "about:blank";
     document.body.classList.remove("panel-open");
+    if (cheatPanel.hidden) overlay.hidden = true;
+  }
+
+  function openCheatsheet() {
+    cheatPanel.hidden = false;
+    overlay.hidden = false;
+  }
+
+  function closeCheatsheet() {
+    cheatPanel.hidden = true;
+    if (panel.hidden) overlay.hidden = true;
   }
 
   document.addEventListener("click", function (e) {
     var wordEl = closestWord(e.target);
-    if (wordEl) {
-      e.preventDefault();
+
+    if (e.target.classList && e.target.classList.contains("tt-open") && pinnedWord) {
       hideTooltip();
-      openPanel(wordEl);
+      openPanel(pinnedWord);
       return;
     }
+
+    if (wordEl) {
+      e.preventDefault();
+      if (hasHover) {
+        hideTooltip();
+        openPanel(wordEl);
+      } else if (pinnedWord === wordEl) {
+        // second tap on the same word -> go straight to the entry
+        hideTooltip();
+        openPanel(wordEl);
+      } else {
+        pinTooltip(wordEl);
+      }
+      return;
+    }
+
+    if (!hasHover && pinnedWord && e.target !== tooltip && !tooltip.contains(e.target)) {
+      hideTooltip();
+    }
+
     if (e.target.id === "panel-close" || e.target === overlay) {
       closePanel();
+      closeCheatsheet();
     }
     if (e.target.id === "cheatsheet-btn") {
-      cheatPanel.hidden = !cheatPanel.hidden;
+      if (cheatPanel.hidden) openCheatsheet();
+      else closeCheatsheet();
     }
     if (e.target.id === "cheatsheet-close") {
-      cheatPanel.hidden = true;
+      closeCheatsheet();
     }
   });
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
     if (panel && !panel.hidden) closePanel();
-    if (cheatPanel && !cheatPanel.hidden) cheatPanel.hidden = true;
+    if (cheatPanel && !cheatPanel.hidden) closeCheatsheet();
+    if (!hasHover) hideTooltip();
   });
 
   // ---- English translation toggle (remembered across books) ----
@@ -137,6 +208,36 @@
       } catch (e) {
         /* ignore */
       }
+    });
+  }
+
+  // ---- Jump to section ----
+
+  if (sectionJump) {
+    sectionJump.addEventListener("change", function () {
+      var sid = sectionJump.value;
+      if (!sid) return;
+      var target = document.getElementById(sid);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.replaceState(null, "", "#" + sid);
+      }
+      sectionJump.value = "";
+    });
+  }
+
+  // ---- Back to top ----
+
+  if (backToTop) {
+    window.addEventListener(
+      "scroll",
+      function () {
+        backToTop.hidden = window.scrollY < 600;
+      },
+      { passive: true }
+    );
+    backToTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 })();

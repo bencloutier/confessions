@@ -2,16 +2,50 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones VII — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER SEPTIMUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf6.html">&laquo; VI</a><a href="conf8.html">VIII &raquo;</a>
+    <span class="booknav-side"><a href="conf6.html">&laquo; VI</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="7.1.1">7.1 — iam mortua erat adulescentia mea…</option>
+    <option value="7.1.2">7.2 — ego itaque incrassatus corde nec…</option>
+    <option value="7.2.3">7.3 — sat erat mihi, domine, adversus…</option>
+    <option value="7.3.4">7.4 — sed et ego adhuc, quamvis…</option>
+    <option value="7.3.5">7.5 — et intendebam ut cernerem quod…</option>
+    <option value="7.4.6">7.6 — sic enim nitebar invenire cetera,…</option>
+    <option value="7.5.7">7.7 — et quaerebam unde malum, et…</option>
+    <option value="7.6.8">7.8 — iam etiam mathematicorum fallaces divinationes…</option>
+    <option value="7.6.9">7.9 — his itaque auditis et creditis…</option>
+    <option value="7.6.10">7.10 — hinc autem accepto aditu, ipse…</option>
+    <option value="7.7.11">7.11 — iam itaque me, adiutor meus,…</option>
+    <option value="7.8.12">7.12 — tu vero, domine, in aeternum…</option>
+    <option value="7.9.13">7.13 — et primo volens ostendere mihi…</option>
+    <option value="7.9.14">7.14 — item legi ibi quia verbum,…</option>
+    <option value="7.9.15">7.15 — et ideo legebam ibi etiam…</option>
+    <option value="7.10.16">7.16 — et inde admonitus redire ad…</option>
+    <option value="7.11.17">7.17 — et inspexi cetera infra te…</option>
+    <option value="7.12.18">7.18 — et manifestatum est mihi quoniam…</option>
+    <option value="7.13.19">7.19 — et tibi omnino non est…</option>
+    <option value="7.14.20">7.20 — non est sanitas eis quibus…</option>
+    <option value="7.15.21">7.21 — et respexi alia, et vidi…</option>
+    <option value="7.16.22">7.22 — et sensi expertus non esse…</option>
+    <option value="7.17.23">7.23 — et mirabar quod iam te…</option>
+    <option value="7.18.24">7.24 — et quaerebam viam comparandi roboris…</option>
+    <option value="7.19.25">7.25 — ego vero aliud putabam tantumque…</option>
+    <option value="7.20.26">7.26 — sed tunc, lectis platonicorum illis…</option>
+    <option value="7.21.27">7.27 — itaque avidissime arripui venerabilem stilum…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf8.html">VIII &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -195,6 +229,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

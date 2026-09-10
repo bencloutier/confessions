@@ -2,16 +2,53 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones VIII — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER OCTAVUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf7.html">&laquo; VII</a><a href="conf9.html">IX &raquo;</a>
+    <span class="booknav-side"><a href="conf7.html">&laquo; VII</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="8.1.1">8.1 — deus meus, recorder in gratiarum…</option>
+    <option value="8.1.2">8.2 — videbam enim plenam ecclesiam, et…</option>
+    <option value="8.2.3">8.3 — perrexi ergo ad Simplicianum, patrem…</option>
+    <option value="8.2.4">8.4 — o domine, domine, qui inclinasti…</option>
+    <option value="8.2.5">8.5 — denique ut ventum est ad…</option>
+    <option value="8.3.6">8.6 — deus bone, quid agitur in…</option>
+    <option value="8.3.7">8.7 — quid ergo agitur in anima,…</option>
+    <option value="8.3.8">8.8 — hoc in turpi et exsecranda…</option>
+    <option value="8.4.9">8.9 — age, domine, fac, excita et…</option>
+    <option value="8.5.10">8.10 — sed ubi mihi homo tuus…</option>
+    <option value="8.5.11">8.11 — sic intellegebam me ipso experimento…</option>
+    <option value="8.5.12">8.12 — ita sarcina saeculi, velut somno…</option>
+    <option value="8.6.13">8.13 — et de vinculo quidem desiderii…</option>
+    <option value="8.6.14">8.14 — quodam igitur die (non recolo…</option>
+    <option value="8.6.15">8.15 — inde sermo eius devolutus est…</option>
+    <option value="8.7.16">8.16 — narrabat haec Ponticianus. tu autem,…</option>
+    <option value="8.7.17">8.17 — tunc vero quanto ardentius amabam…</option>
+    <option value="8.7.18">8.18 — et putaveram me propterea differre…</option>
+    <option value="8.8.19">8.19 — tum in illa grandi rixa…</option>
+    <option value="8.8.20">8.20 — denique tam multa faciebam corpore…</option>
+    <option value="8.9.21">8.21 — unde hoc monstrum? et quare…</option>
+    <option value="8.10.22">8.22 — pereant a facie tua, deus,…</option>
+    <option value="8.10.23">8.23 — nam si tot sunt contrariae…</option>
+    <option value="8.10.24">8.24 — iam ergo non dicant, cum…</option>
+    <option value="8.11.25">8.25 — sic aegrotabam et excruciabar, accusans…</option>
+    <option value="8.11.26">8.26 — retinebant nugae nugarum et vanitates…</option>
+    <option value="8.11.27">8.27 — sed iam tepidissime hoc dicebat.…</option>
+    <option value="8.12.28">8.28 — ubi vero a fundo arcano…</option>
+    <option value="8.12.29">8.29 — dicebam haec et flebam amarissima…</option>
+    <option value="8.12.30">8.30 — tum interiecto aut digito aut…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf9.html">IX &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -213,6 +250,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

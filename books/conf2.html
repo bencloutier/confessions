@@ -2,16 +2,41 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones II — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER SECUNDUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf1.html">&laquo; I</a><a href="conf3.html">III &raquo;</a>
+    <span class="booknav-side"><a href="conf1.html">&laquo; I</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="2.1.1">2.1 — recordari volo transactas foeditates meas…</option>
+    <option value="2.2.2">2.2 — et quid erat quod me…</option>
+    <option value="2.2.3">2.3 — quis mihi modularetur aerumnam meam…</option>
+    <option value="2.2.4">2.4 — sed efferbui miser, sequens impetum…</option>
+    <option value="2.3.5">2.5 — et anno quidem illo intermissa…</option>
+    <option value="2.3.6">2.6 — sed ubi sexto illo et…</option>
+    <option value="2.3.7">2.7 — ei mihi! et audeo dicere…</option>
+    <option value="2.3.8">2.8 — ecce cum quibus comitibus iter…</option>
+    <option value="2.4.9">2.9 — furtum certe punit lex tua,…</option>
+    <option value="2.5.10">2.10 — etenim species est pulchris corporibus…</option>
+    <option value="2.5.11">2.11 — cum itaque de facinore quaeritur…</option>
+    <option value="2.6.12">2.12 — quid ego miser in te…</option>
+    <option value="2.6.13">2.13 — nam et superbia celsitudinem imitatur,…</option>
+    <option value="2.6.14">2.14 — ita fornicatur anima, cum avertitur…</option>
+    <option value="2.7.15">2.15 — quid retribuam domino quod recolit…</option>
+    <option value="2.8.16">2.16 — quem fructum habui miser aliquando…</option>
+    <option value="2.9.17">2.17 — quid erat ille affectus animi?…</option>
+    <option value="2.10.18">2.18 — quis exaperit istam tortuosissimam et…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf3.html">III &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -141,6 +166,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">

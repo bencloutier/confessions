@@ -153,16 +153,24 @@ PAGE_TEMPLATE = """<!doctype html>
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones {roman} — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM {title_upper}</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    {prev_link}{next_link}
+    <span class="booknav-side">{prev_link}</span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      {section_options}
+    </select>
+    <span class="booknav-side booknav-side-right">{next_link}</span>
   </nav>
 </header>
 <main>
@@ -192,6 +200,7 @@ SHARED_WIDGETS = """
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">
@@ -311,15 +320,18 @@ def build_book(n: int):
         )
 
     sections_html = []
+    section_options = []
     for i, (sid, text) in enumerate(paragraphs):
         body = tokenize_to_html(text)
         sid_label = sid or ""
+        display = display_label(sid_label)
         translation = html.escape(english[i]) if i < len(english) else ""
         sections_html.append(
-            SECTION_TEMPLATE.format(
-                sid=sid_label, display=display_label(sid_label), body=body, translation=translation
-            )
+            SECTION_TEMPLATE.format(sid=sid_label, display=display, body=body, translation=translation)
         )
+        preview = " ".join(text.split()[:5])
+        option_label = html.escape(f"{display} — {preview}…")
+        section_options.append(f'<option value="{sid_label}">{option_label}</option>')
 
     prev_link = f'<a href="conf{n-1}.html">&laquo; {ROMAN[n-1]}</a>' if n > 1 else ""
     next_link = f'<a href="conf{n+1}.html">{ROMAN[n+1]} &raquo;</a>' if n < 13 else ""
@@ -328,6 +340,7 @@ def build_book(n: int):
         roman=ROMAN[n],
         title_upper=BOOK_TITLES[n].upper(),
         sections="\n".join(sections_html),
+        section_options="\n    ".join(section_options),
         prev_link=prev_link,
         next_link=next_link,
         shared_widgets=SHARED_WIDGETS,

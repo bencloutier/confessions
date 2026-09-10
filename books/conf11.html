@@ -2,16 +2,64 @@
 <html lang="la">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Confessiones XI — Confessions Word Guide</title>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="home" href="../index.html">&larr; Index</a>
+  <div class="topbar-row">
+    <a class="home" href="../index.html">&larr; Index</a>
+    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
+  </div>
   <h1>AVGVSTINI CONFESSIONVM LIBER UNDECIMUS</h1>
   <nav class="booknav">
-    <button id="translation-toggle" class="toggle-btn" aria-pressed="true">Hide translation</button>
-    <a href="conf10.html">&laquo; X</a><a href="conf12.html">XII &raquo;</a>
+    <span class="booknav-side"><a href="conf10.html">&laquo; X</a></span>
+    <select id="section-jump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to &hellip;</option>
+      <option value="11.1.1">11.1 — numquid, domine, cum tua sit…</option>
+    <option value="11.2.2">11.2 — quando autem sufficio lingua calami…</option>
+    <option value="11.2.3">11.3 — domine deus meus, intende orationi…</option>
+    <option value="11.2.4">11.4 — domine, miserere mei et exaudi…</option>
+    <option value="11.3.5">11.5 — audiam et intellegam quomodo in…</option>
+    <option value="11.4.6">11.6 — ecce sunt caelum et terra!…</option>
+    <option value="11.5.7">11.7 — quomodo autem fecisti caelum et…</option>
+    <option value="11.6.8">11.8 — sed quomodo dixisti? numquid illo…</option>
+    <option value="11.7.9">11.9 — vocas itaque nos ad intellegendum…</option>
+    <option value="11.8.10">11.10 — cur, quaeso, domine deus meus?…</option>
+    <option value="11.9.11">11.11 — in hoc principio, deus, fecisti…</option>
+    <option value="11.10.12">11.12 — nonne ecce pleni sunt vetustatis…</option>
+    <option value="11.11.13">11.13 — qui haec dicunt nondum te…</option>
+    <option value="11.12.14">11.14 — ecce respondeo dicenti, &#x27;quid faciebat…</option>
+    <option value="11.13.15">11.15 — at si cuiusquam volatilis sensus…</option>
+    <option value="11.13.16">11.16 — nec tu tempore tempora praecedis,…</option>
+    <option value="11.14.17">11.17 — nullo ergo tempore non feceras…</option>
+    <option value="11.15.18">11.18 — et tamen dicimus longum tempus…</option>
+    <option value="11.15.19">11.19 — videamus ergo, anima humana, utrum…</option>
+    <option value="11.15.20">11.20 — ecce praesens tempus, quod solum…</option>
+    <option value="11.16.21">11.21 — et tamen, domine, sentimus intervalla…</option>
+    <option value="11.17.22">11.22 — quaero, pater, non adfirmo. deus…</option>
+    <option value="11.18.23">11.23 — sine me, domine, amplius quaerere,…</option>
+    <option value="11.18.24">11.24 — quoquo modo se itaque habeat…</option>
+    <option value="11.19.25">11.25 — tu itaque, regnator creaturae tuae,…</option>
+    <option value="11.20.26">11.26 — quod autem nunc liquet et…</option>
+    <option value="11.21.27">11.27 — dixi ergo paulo ante quod…</option>
+    <option value="11.22.28">11.28 — exarsit animus meus nosse istuc…</option>
+    <option value="11.23.29">11.29 — audivi a quodam homine docto…</option>
+    <option value="11.23.30">11.30 — ego scire cupio vim naturamque…</option>
+    <option value="11.24.31">11.31 — iubes ut approbem, si quis…</option>
+    <option value="11.25.32">11.32 — et confiteor tibi, domine, ignorare…</option>
+    <option value="11.26.33">11.33 — nonne tibi confitetur anima mea…</option>
+    <option value="11.27.34">11.34 — insiste, anime meus, et attende…</option>
+    <option value="11.27.35">11.35 — &#x27;deus creator omnium&#x27;: versus iste…</option>
+    <option value="11.27.36">11.36 — in te, anime meus, tempora…</option>
+    <option value="11.28.37">11.37 — sed quomodo minuitur aut consumitur…</option>
+    <option value="11.28.38">11.38 — dicturus sum canticum quod novi.…</option>
+    <option value="11.29.39">11.39 — sed quoniam melior est misericordia…</option>
+    <option value="11.30.40">11.40 — et stabo atque solidabor in…</option>
+    <option value="11.31.41">11.41 — domine deus meus, quis ille…</option>
+    </select>
+    <span class="booknav-side booknav-side-right"><a href="conf12.html">XII &raquo;</a></span>
   </nav>
 </header>
 <main>
@@ -279,6 +327,7 @@
   <iframe id="panel-frame" class="panel-frame" title="Logeion dictionary lookup"></iframe>
 </aside>
 
+<button id="back-to-top" class="fab fab-secondary" title="Back to top" hidden>&uarr;</button>
 <button id="cheatsheet-btn" class="fab" title="Morphology abbreviations">?</button>
 <aside id="cheatsheet-panel" class="cheatsheet" hidden>
   <div class="panel-header">
