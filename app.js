@@ -10,7 +10,6 @@
   var cheatBtn = document.getElementById("cheatsheet-btn");
   var cheatPanel = document.getElementById("cheatsheet-panel");
   var sectionJump = document.getElementById("section-jump");
-  var backToTop = document.getElementById("back-to-top");
   var translationBar = document.getElementById("translation-bar");
   var translationBarToggle = document.getElementById("translation-bar-toggle");
   var translationBarNum = document.getElementById("translation-bar-num");
@@ -141,8 +140,9 @@
     var wordEl = closestWord(e.target);
 
     if (e.target.classList && e.target.classList.contains("tt-open") && pinnedWord) {
+      var target = pinnedWord;
       hideTooltip();
-      openPanel(pinnedWord);
+      openPanel(target);
       return;
     }
 
@@ -271,21 +271,6 @@
       var target = sectionJump.value;
       if (!target) return;
       window.location.href = target;
-    });
-  }
-
-  // ---- Back to top ----
-
-  if (backToTop) {
-    window.addEventListener(
-      "scroll",
-      function () {
-        backToTop.hidden = window.scrollY < 600;
-      },
-      { passive: true }
-    );
-    backToTop.addEventListener("click", function () {
-      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 

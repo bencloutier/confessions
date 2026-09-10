@@ -518,19 +518,6 @@ body.panel-open {
   filter: brightness(1.1);
 }
 
-.fab-secondary {
-  bottom: calc(var(--tbar-h, 0px) + 4.25rem);
-  background: var(--ink);
-  color: var(--bg);
-}
-
-@media (prefers-color-scheme: dark) {
-  .fab-secondary {
-    background: var(--accent-soft);
-    color: var(--ink);
-  }
-}
-
 .nav-hint {
   position: fixed;
   left: 50%;
@@ -570,10 +557,11 @@ body.panel-open {
    between chapters; these are a visible, discoverable fallback. */
 .edge-nav {
   position: fixed;
-  bottom: calc(var(--tbar-h, 0px) + 1.25rem);
-  z-index: 45;
-  width: 2.6rem;
-  height: 2.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 22;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -584,22 +572,23 @@ body.panel-open {
   font-size: 1.3rem;
   font-weight: 700;
   line-height: 1;
+  opacity: 0.7;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-  transition: filter 0.15s ease, transform 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
 .edge-nav:hover,
 .edge-nav:focus-visible {
-  filter: brightness(1.1);
-  transform: scale(1.06);
+  opacity: 1;
+  transform: translateY(-50%) scale(1.08);
 }
 
 .edge-nav.prev {
-  left: 1.25rem;
+  left: 0.6rem;
 }
 
 .edge-nav.next {
-  left: 4.45rem;
+  right: 0.6rem;
 }
 
 body.panel-open .edge-nav {
@@ -722,10 +711,6 @@ body.panel-open .edge-nav {
     bottom: calc(var(--tbar-h, 0px) + 0.85rem);
     width: 2.4rem;
     height: 2.4rem;
-  }
-
-  .fab-secondary {
-    bottom: calc(var(--tbar-h, 0px) + 3.65rem);
   }
 
   .translation-bar-text {
